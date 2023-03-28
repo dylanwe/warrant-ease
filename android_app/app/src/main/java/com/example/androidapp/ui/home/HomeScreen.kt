@@ -1,0 +1,56 @@
+package com.example.androidapp.ui.home
+
+import android.util.Log
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen() {
+    val user = Firebase.auth.currentUser!!
+
+    user.getIdToken(true)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val idToken: String? = task.result.token
+                // Send token to your backend via HTTPS
+                // ...
+                Log.e("TOKEN", idToken.toString())
+            } else {
+                // Handle error -> task.getException();
+            }
+        }
+
+
+    Scaffold { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Hello, ${user.displayName}",
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 30.sp
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = user.email ?: "")
+            Button(onClick = {
+                Firebase.auth.signOut()
+            }) {
+                Text(text = "Sign out")
+            }
+        }
+    }
+}
