@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.androidapp.R
 
 @Composable
-fun SignInButton(
+fun GoogleSignInButton(
     text: String,
     loadingText: String = "Signing in...",
     icon: Painter,
@@ -29,12 +29,12 @@ fun SignInButton(
     borderColor: Color = Color.LightGray,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     progressIndicatorColor: Color = MaterialTheme.colorScheme.primary,
-    onClick: () -> Unit
+    googleSignIn: () -> Unit
 ) {
     Surface(
         modifier = Modifier.clickable(
             enabled = !isLoading,
-            onClick = onClick
+            onClick = googleSignIn
         ),
         shape = shape,
         border = BorderStroke(width = 1.dp, color = borderColor),
@@ -83,11 +83,11 @@ fun SignInButton(
 @Composable
 @Preview
 fun SignInButtonPreview() {
-    SignInButton(
+    GoogleSignInButton(
         text = "Sign in with Google",
         loadingText = "Signing in...",
         isLoading = false,
         icon = painterResource(id = R.drawable.ic_launcher_background),
-        onClick = { }
+        googleSignIn = { }
     )
 }

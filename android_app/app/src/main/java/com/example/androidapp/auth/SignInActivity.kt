@@ -16,21 +16,26 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 /**
- * Demonstrate Firebase Authentication using a Google ID Token.
- * Copied from the Firebase example: [source](https://github.com/firebase/snippets-android/blob/cb15737fe61389d2b58c65ae171cf83c26119cb3/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin/GoogleSignInActivity.kt)
+ * Firebase Authentication with email and Google.
+ * Inspired by the [Firebase examples](https://github.com/firebase/snippets-android/tree/cb15737fe61389d2b58c65ae171cf83c26119cb3/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin)
+ * For more documentation please check [email and password sign in](https://firebase.google.com/docs/auth/android/password-auth) & [Google sign in](https://firebase.google.com/docs/auth/android/google-signin)
+ *
+ * @author Dylan Weijgertze
  */
-abstract class GoogleSignInActivity : ComponentActivity(), AuthStateListener {
+abstract class SignInActivity : ComponentActivity(), AuthStateListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // configuration of the googleSignInClient
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
+        // init a googleSignInClient for this app
         googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = Firebase.auth
     }
@@ -45,6 +50,9 @@ abstract class GoogleSignInActivity : ComponentActivity(), AuthStateListener {
         auth.removeAuthStateListener(this)
     }
 
+    /**
+     * Runs when an activity is completed and attempts to log the user in with a Google ID token
+     */
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -64,6 +72,9 @@ abstract class GoogleSignInActivity : ComponentActivity(), AuthStateListener {
         }
     }
 
+    /**
+     * Signs user with Google ID token in with firebase
+     */
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
@@ -78,13 +89,49 @@ abstract class GoogleSignInActivity : ComponentActivity(), AuthStateListener {
             }
     }
 
-    protected fun signIn() {
+    /**
+     * Attempt to sign in with Google
+     */
+    protected fun googleSignIn() {
         val signInIntent = googleSignInClient.signInIntent
+        // start an activity to sign in
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
+    /**
+     * Attempt to sign up with a given email and password
+     */
+    protected fun emailSignUp(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "createUserWithEmail:success")
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                }
+            }
+    }
+
+    /**
+     * Attempt to sign in with a given email and password
+     */
+    protected fun emailSignIn(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w(TAG, "signInWithEmail:failure", task.exception)
+                }
+            }
+    }
+
     companion object {
-        private const val TAG = "GoogleActivity"
+        private const val TAG = "SignInActivity"
         private const val RC_SIGN_IN = 9002
     }
 }

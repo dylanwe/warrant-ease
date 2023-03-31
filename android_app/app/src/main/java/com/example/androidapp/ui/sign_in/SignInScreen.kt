@@ -2,24 +2,38 @@ package com.example.androidapp.ui.sign_in
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.androidapp.R
 
 @Composable
-fun SignInScreen(signIn: () -> Unit) {
+fun SignInScreen(
+    googleSignIn: () -> Unit,
+    emailSignIn: (String, String) -> Unit,
+    emailSignUp: (String, String) -> Unit
+) {
     var text by remember { mutableStateOf<String?>(null) }
     AuthView(
         errorText = text,
-        onClick = {
+        googleSignIn = {
             text = null
-            signIn()
+            googleSignIn()
+        },
+        emailSignIn = { email, password ->
+            text = null
+            emailSignIn(email, password)
+        },
+        emailSignUp = { email, password ->
+            text = null
+            emailSignUp(email, password)
         }
     )
 }
@@ -29,29 +43,46 @@ fun SignInScreen(signIn: () -> Unit) {
 @Composable
 fun AuthView(
     errorText: String?,
-    onClick: () -> Unit
+    googleSignIn: () -> Unit,
+    emailSignIn: (String, String) -> Unit,
+    emailSignUp: (String, String) -> Unit
 ) {
-    var isLoading by remember { mutableStateOf(false) }
+    var isGoogleLoading by remember { mutableStateOf(false) }
 
     Scaffold {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(50.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SignInButton(
+            EmailSignInButton(
+                emailSignIn = { email, password ->
+                    emailSignIn(email, password)
+                },
+                emailSignUp = { email, password ->
+                    emailSignUp(email, password)
+                }
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+            Divider(color = Color.LightGray)
+            Spacer(modifier = Modifier.height(24.dp))
+
+            GoogleSignInButton(
                 text = "Sign in with Google",
                 loadingText = "Signing in...",
-                isLoading = isLoading,
+                isLoading = isGoogleLoading,
                 icon = painterResource(id = R.drawable.ic_google_logo),
-                onClick = {
-                    isLoading = true
-                    onClick()
+                googleSignIn = {
+                    isGoogleLoading = true
+                    googleSignIn()
                 }
             )
 
             errorText?.let {
-                isLoading = false
+                isGoogleLoading = false
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(text = it)
             }

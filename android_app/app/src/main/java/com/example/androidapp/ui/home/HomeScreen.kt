@@ -17,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 fun HomeScreen() {
     val user = Firebase.auth.currentUser!!
 
+    // Example of how to get the users uid
     user.getIdToken(true)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -39,7 +40,7 @@ fun HomeScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Hello, ${user.displayName}",
+                text = "Hello,",
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 30.sp
