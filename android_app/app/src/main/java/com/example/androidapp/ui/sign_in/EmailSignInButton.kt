@@ -51,7 +51,6 @@ fun EmailSignInButton(
                     R.drawable.baseline_visibility_24
                 else R.drawable.baseline_visibility_off_24
 
-                // TODO: Please provide localized description for accessibility services
                 val description = if (isPasswordVisible) {
                     stringResource(id = R.string.hide_password)
                 } else {

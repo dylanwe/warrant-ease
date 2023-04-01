@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,35 +13,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.androidapp.R
 
+@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SignInScreen(
-    googleSignIn: () -> Unit,
-    emailSignIn: (String, String) -> Unit,
-    emailSignUp: (String, String) -> Unit
-) {
-    var text by remember { mutableStateOf<String?>(null) }
-    AuthView(
-        errorText = text,
-        googleSignIn = {
-            text = null
-            googleSignIn()
-        },
-        emailSignIn = { email, password ->
-            text = null
-            emailSignIn(email, password)
-        },
-        emailSignUp = { email, password ->
-            text = null
-            emailSignUp(email, password)
-        }
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "UnusedMaterial3ScaffoldPaddingParameter")
-@Composable
-fun AuthView(
-    errorText: String?,
     googleSignIn: () -> Unit,
     emailSignIn: (String, String) -> Unit,
     emailSignUp: (String, String) -> Unit
@@ -80,12 +54,6 @@ fun AuthView(
                     googleSignIn()
                 }
             )
-
-            errorText?.let {
-                isGoogleLoading = false
-                Spacer(modifier = Modifier.height(30.dp))
-                Text(text = it)
-            }
         }
     }
 }

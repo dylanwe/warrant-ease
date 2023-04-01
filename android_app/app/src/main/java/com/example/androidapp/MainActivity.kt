@@ -13,9 +13,6 @@ import com.example.androidapp.auth.EmailAuth
 import com.example.androidapp.auth.GoogleAuth
 import com.example.androidapp.navigation.AppNavigation
 import com.example.androidapp.ui.theme.AndroidAppTheme
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.ktx.auth
@@ -29,25 +26,16 @@ import com.google.firebase.ktx.Firebase
  */
 class MainActivity : ComponentActivity(), AuthStateListener {
     private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var googleAuth: GoogleAuth
     private lateinit var emailAuth: EmailAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // configuration of the googleSignInClient
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        // init a googleSignInClient for this app
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = Firebase.auth
 
         // init auth providers
-        googleAuth = GoogleAuth(auth, googleSignInClient)
+        googleAuth = GoogleAuth(auth, this)
         emailAuth = EmailAuth(auth)
     }
 
@@ -65,7 +53,7 @@ class MainActivity : ComponentActivity(), AuthStateListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         // handle activity result
-        googleAuth.onActivityResult(requestCode, resultCode, data)
+        googleAuth.onActivityResult(requestCode, data)
     }
 
     /**

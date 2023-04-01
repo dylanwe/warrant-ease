@@ -1,9 +1,13 @@
 package com.example.androidapp.auth
 
+import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import androidx.lifecycle.DefaultLifecycleObserver
+import com.example.androidapp.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -17,12 +21,25 @@ import com.google.firebase.auth.GoogleAuthProvider
  */
 class GoogleAuth(
     private val auth: FirebaseAuth,
-    private val googleSignInClient: GoogleSignInClient
-) {
+    private val activity: Activity,
+) : DefaultLifecycleObserver {
+    private var googleSignInClient: GoogleSignInClient
+
+    init {
+        // configuration of the googleSignInClient
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(activity.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        // init a googleSignInClient for this app
+        googleSignInClient = GoogleSignIn.getClient(activity, gso)
+    }
+
     /**
      * Runs when an activity is completed and attempts to log the user in with a Google ID token
      */
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    fun onActivityResult(requestCode: Int, data: Intent?) {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)

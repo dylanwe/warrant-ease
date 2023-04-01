@@ -1,6 +1,5 @@
 package com.example.androidapp.ui.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -47,11 +46,8 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = user.email ?: "")
-            Button(onClick = {
-                viewModel.getExample()
-            }) {
-                Text(text = "get example")
-            }
+            Spacer(modifier = Modifier.height(10.dp))
+
             Button(onClick = {
                 Firebase.auth.signOut()
             }) {
