@@ -21,6 +21,12 @@ import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
+/**
+ * Activity with Firebase Authentication.
+ * Inspired by the [Firebase examples](https://github.com/firebase/snippets-android/tree/cb15737fe61389d2b58c65ae171cf83c26119cb3/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin)
+ *
+ * @author Dylan Weijgertze
+ */
 class MainActivity : ComponentActivity(), AuthStateListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
@@ -47,13 +53,11 @@ class MainActivity : ComponentActivity(), AuthStateListener {
 
     override fun onStart() {
         super.onStart()
-        // listen for auth state
         auth.addAuthStateListener(this)
     }
 
     override fun onStop() {
         super.onStop()
-        // stop listening for auth state
         auth.removeAuthStateListener(this)
     }
 

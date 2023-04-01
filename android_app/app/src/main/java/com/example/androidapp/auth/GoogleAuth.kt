@@ -38,7 +38,6 @@ class GoogleAuth(
         }
     }
 
-
     /**
      * Signs user with Google ID token in with firebase
      */
