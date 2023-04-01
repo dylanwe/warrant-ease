@@ -9,6 +9,9 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withTimeout
 
+/**
+ * Example repository
+ */
 class WarrantyRepository {
     private val warrantyApiService: WarrantyApiService = WarrantyApi.createApi()
 

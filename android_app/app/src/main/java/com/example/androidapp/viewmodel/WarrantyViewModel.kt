@@ -9,6 +9,9 @@ import com.example.androidapp.model.Example
 import com.example.androidapp.repository.WarrantyRepository
 import kotlinx.coroutines.launch
 
+/**
+ * Example view-model
+ */
 class WarrantyViewModel(application: Application) : AndroidViewModel(application) {
     private val warrantyRepository = WarrantyRepository()
 

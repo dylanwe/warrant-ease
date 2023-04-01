@@ -7,6 +7,11 @@ import kotlinx.coroutines.tasks.await
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/**
+ * Adds authorization header to each request using Firebase Auth
+ *
+ * @author Dylan Weijgertze
+ */
 class AuthorizationInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         // block thread until token task is resolved
