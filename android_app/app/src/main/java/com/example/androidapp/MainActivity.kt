@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity(), AuthStateListener {
 
         auth = Firebase.auth
 
-        // init auth providers
+        // Init auth providers
         googleAuth = GoogleAuth(auth, this)
         emailAuth = EmailAuth(auth)
     }
@@ -71,9 +71,7 @@ class MainActivity : ComponentActivity(), AuthStateListener {
                     AppNavigation(
                         navHostController = navHostController,
                         googleSignIn = {
-                            googleAuth.googleSignIn(startActivity = { signInIntent, RC_SIGN_IN ->
-                                startActivityForResult(signInIntent, RC_SIGN_IN)
-                            })
+                            googleAuth.googleSignIn()
                         },
                         emailSignIn = emailAuth::emailSignIn,
                         emailSignUp = emailAuth::emailSignUp

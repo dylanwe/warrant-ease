@@ -74,12 +74,11 @@ class GoogleAuth(
 
     /**
      * Attempt to sign in with Google
-     * @param startActivity start an activity to which the google sign in intent is given
      */
-    fun googleSignIn(startActivity: (Intent, Int) -> Unit) {
+     fun googleSignIn() {
         val signInIntent = googleSignInClient.signInIntent
-        // start an activity to sign in
-        startActivity(signInIntent, RC_SIGN_IN)
+        // Start an activity to sign in
+        activity.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     companion object {
