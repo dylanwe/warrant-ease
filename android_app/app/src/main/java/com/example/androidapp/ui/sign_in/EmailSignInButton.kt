@@ -9,8 +9,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,6 +21,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.androidapp.R
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EmailSignInButton(
     emailSignIn: (String, String) -> Unit,
@@ -28,6 +31,7 @@ fun EmailSignInButton(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -65,11 +69,8 @@ fun EmailSignInButton(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                try {
-                    emailSignIn(email, password)
-                } catch (e: Exception) {
-                    informUser("Sign in went wrong", context)
-                }
+                keyboardController?.hide()
+                emailSignIn(email, password)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary
@@ -80,11 +81,8 @@ fun EmailSignInButton(
         Button(
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                try {
-                    emailSignUp(email, password)
-                } catch (e: Exception) {
-                    informUser("Sign up went wrong", context)
-                }
+                keyboardController?.hide()
+                emailSignUp(email, password)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary
