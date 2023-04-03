@@ -85,7 +85,8 @@ fun EmailSignInButton(
                 emailSignUp(email, password)
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondary
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary
             )
         ) {
             Text(text = "Sign up")

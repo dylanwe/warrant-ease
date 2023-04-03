@@ -35,7 +35,8 @@ fun GoogleSignInButton(
         modifier = Modifier.clickable(
             enabled = !isLoading,
             onClick = googleSignIn
-        ),
+        )
+            .fillMaxWidth(),
         shape = shape,
         border = BorderStroke(width = 1.dp, color = borderColor),
         color = backgroundColor
@@ -48,6 +49,7 @@ fun GoogleSignInButton(
                     top = 12.dp,
                     bottom = 12.dp
                 )
+                .fillMaxWidth()
                 .animateContentSize(
                     animationSpec = tween(
                         durationMillis = 300,
