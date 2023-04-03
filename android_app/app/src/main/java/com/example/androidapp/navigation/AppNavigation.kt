@@ -1,5 +1,6 @@
 package com.example.androidapp.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -7,17 +8,16 @@ import androidx.navigation.compose.composable
 import com.example.androidapp.ui.Screens
 import com.example.androidapp.ui.home.HomeScreen
 import com.example.androidapp.ui.sign_in.SignInScreen
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 @Composable
 fun AppNavigation(
     navHostController: NavHostController,
-    googleSignIn: () -> Unit,
-    emailSignIn: (String, String) -> Unit,
-    emailSignUp: (String, String) -> Unit
+    firebaseUser: FirebaseUser?
 ) {
-    val startScreen = if (Firebase.auth.currentUser == null) {
+    val startScreen = if (firebaseUser == null) {
         Screens.SignInScreen.route
     } else {
         Screens.HomeScreen.route
@@ -31,11 +31,7 @@ fun AppNavigation(
             HomeScreen()
         }
         composable(Screens.SignInScreen.route) {
-            SignInScreen(
-                googleSignIn = googleSignIn,
-                emailSignIn = emailSignIn,
-                emailSignUp = emailSignUp
-            )
+            SignInScreen()
         }
     }
 }

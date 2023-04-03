@@ -39,19 +39,17 @@ class GoogleAuth(
     /**
      * Runs when an activity is completed and attempts to log the user in with a Google ID token
      */
-    fun onActivityResult(requestCode: Int, data: Intent?) {
+    fun onActivityResult(data: Intent?) {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
-            }
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        try {
+            // Google Sign In was successful, authenticate with Firebase
+            val account = task.getResult(ApiException::class.java)!!
+            Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+            firebaseAuthWithGoogle(account.idToken!!)
+        } catch (e: ApiException) {
+            // Google Sign In failed, update UI appropriately
+            Log.w(TAG, "Google sign in failed", e)
         }
     }
 
@@ -75,7 +73,7 @@ class GoogleAuth(
     /**
      * Attempt to sign in with Google
      */
-     fun googleSignIn() {
+    fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         // Start an activity to sign in
         activity.startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -83,6 +81,6 @@ class GoogleAuth(
 
     companion object {
         private const val TAG = "Auth"
-        private const val RC_SIGN_IN = 9002
+        const val RC_SIGN_IN = 9002
     }
 }

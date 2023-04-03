@@ -1,7 +1,6 @@
 package com.example.androidapp.auth
 
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 
 /**
@@ -14,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 class EmailAuth(
     private val auth: FirebaseAuth
 ) {
-    fun emailSignUp(email: String, password: String) {
+    fun signUp(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -30,7 +29,7 @@ class EmailAuth(
     /**
      * Attempt to sign in with a given email and password
      */
-    fun emailSignIn(email: String, password: String) {
+    fun signIn(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

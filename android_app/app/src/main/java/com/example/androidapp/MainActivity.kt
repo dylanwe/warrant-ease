@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.androidapp.auth.EmailAuth
 import com.example.androidapp.auth.GoogleAuth
 import com.example.androidapp.navigation.AppNavigation
 import com.example.androidapp.ui.theme.AndroidAppTheme
@@ -27,16 +26,13 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : ComponentActivity(), AuthStateListener {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleAuth: GoogleAuth
-    private lateinit var emailAuth: EmailAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         auth = Firebase.auth
-
         // Init auth providers
         googleAuth = GoogleAuth(auth, this)
-        emailAuth = EmailAuth(auth)
     }
 
     override fun onStart() {
@@ -52,8 +48,10 @@ class MainActivity : ComponentActivity(), AuthStateListener {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // handle activity result
-        googleAuth.onActivityResult(requestCode, data)
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == GoogleAuth.RC_SIGN_IN) {
+            googleAuth.onActivityResult(data)
+        }
     }
 
     /**
@@ -70,11 +68,7 @@ class MainActivity : ComponentActivity(), AuthStateListener {
                     val navHostController = rememberNavController()
                     AppNavigation(
                         navHostController = navHostController,
-                        googleSignIn = {
-                            googleAuth.googleSignIn()
-                        },
-                        emailSignIn = emailAuth::emailSignIn,
-                        emailSignUp = emailAuth::emailSignUp
+                        firebaseUser = firebaseAuth.currentUser
                     )
                 }
             }
