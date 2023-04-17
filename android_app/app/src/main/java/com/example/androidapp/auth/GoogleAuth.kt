@@ -11,6 +11,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 
 /**
  * Firebase Authentication with Google.
@@ -61,6 +64,12 @@ class GoogleAuth(
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+
+                    // Check if the user is new
+                    if (task.result.additionalUserInfo?.isNewUser == true) {
+                        removeDisplayName(auth)
+                    }
+
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                 } else {
@@ -68,6 +77,17 @@ class GoogleAuth(
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                 }
             }
+    }
+
+    /**
+     * Remove the display name of a user
+     */
+    private fun removeDisplayName(auth: FirebaseAuth) {
+        runBlocking {
+            auth.currentUser!!.updateProfile(
+                userProfileChangeRequest { displayName = null }
+            ).await()
+        }
     }
 
     /**
