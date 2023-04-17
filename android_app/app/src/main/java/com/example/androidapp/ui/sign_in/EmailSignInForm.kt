@@ -2,10 +2,8 @@ package com.example.androidapp.ui.sign_in
 
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,8 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -26,11 +22,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.androidapp.R
 import com.example.androidapp.components.GradientButton
-import com.example.androidapp.ui.theme.AppTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun EmailSignInButton(
+fun EmailSignInForm(
     emailSignIn: (String, String) -> Unit,
     emailSignUp: (String, String) -> Unit
 ) {
@@ -41,7 +36,7 @@ fun EmailSignInButton(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         OutlinedTextField(
             value = email,
@@ -82,13 +77,13 @@ fun EmailSignInButton(
                 emailSignIn(email, password)
             }
         )
-        GradientButton(
-            text = "Sign up",
-            onClick = {
-                keyboardController?.hide()
-                emailSignUp(email, password)
-            }
-        )
+        // GradientButton(
+        //     text = "Sign up",
+        //     onClick = {
+        //         keyboardController?.hide()
+        //         emailSignUp(email, password)
+        //     }
+        // )
     }
 }
 

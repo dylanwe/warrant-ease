@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.androidapp.R
+import com.example.androidapp.ui.theme.AppTheme
 
 @Composable
 fun GoogleSignInButton(
@@ -26,8 +27,8 @@ fun GoogleSignInButton(
     icon: Painter,
     isLoading: Boolean = false,
     shape: Shape = RoundedCornerShape(5.dp),
-    borderColor: Color = Color.LightGray,
-    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    borderColor: Color = MaterialTheme.colorScheme.outline,
+    backgroundColor: Color = MaterialTheme.colorScheme.background,
     progressIndicatorColor: Color = MaterialTheme.colorScheme.primary,
     googleSignIn: () -> Unit
 ) {
