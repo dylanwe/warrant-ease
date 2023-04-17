@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.androidapp.ui.Screens
 import com.example.androidapp.ui.home.HomeScreen
 import com.example.androidapp.ui.sign_in.SignInScreen
+import com.example.androidapp.ui.sign_up.SignUpScreen
 import com.google.firebase.auth.FirebaseUser
 
 @Composable
@@ -29,7 +30,10 @@ fun AppNavigation(
             HomeScreen()
         }
         composable(Screens.SignInScreen.route) {
-            SignInScreen()
+            SignInScreen(navController = navHostController)
+        }
+        composable(Screens.SignUpScreen.route) {
+            SignUpScreen(navController = navHostController)
         }
     }
 }

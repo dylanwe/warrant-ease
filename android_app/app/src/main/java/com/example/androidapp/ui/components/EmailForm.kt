@@ -1,4 +1,4 @@
-package com.example.androidapp.ui.sign_in
+package com.example.androidapp.ui.components
 
 import android.content.Context
 import android.widget.Toast
@@ -25,9 +25,9 @@ import com.example.androidapp.components.GradientButton
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun EmailSignInForm(
-    emailSignIn: (String, String) -> Unit,
-    emailSignUp: (String, String) -> Unit
+fun EmailForm(
+    submitLabel: String,
+    onSubmit: (String, String) -> Unit
 ) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
@@ -71,19 +71,12 @@ fun EmailSignInForm(
             }
         )
         GradientButton(
-            text = "Sign in",
+            text = submitLabel,
             onClick = {
                 keyboardController?.hide()
-                emailSignIn(email, password)
+                onSubmit(email, password)
             }
         )
-        // GradientButton(
-        //     text = "Sign up",
-        //     onClick = {
-        //         keyboardController?.hide()
-        //         emailSignUp(email, password)
-        //     }
-        // )
     }
 }
 
