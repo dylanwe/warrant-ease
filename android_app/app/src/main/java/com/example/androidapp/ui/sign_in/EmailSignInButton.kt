@@ -2,15 +2,20 @@ package com.example.androidapp.ui.sign_in
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -20,6 +25,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.androidapp.R
+import com.example.androidapp.components.GradientButton
+import com.example.androidapp.ui.theme.AppTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -41,6 +48,7 @@ fun EmailSignInButton(
             label = { Text(text = "Email") },
             onValueChange = { email = it },
             modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(18.dp),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
         )
         OutlinedTextField(
@@ -48,6 +56,7 @@ fun EmailSignInButton(
             label = { Text(text = "Password") },
             onValueChange = { password = it },
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            shape = RoundedCornerShape(18.dp),
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             trailingIcon = {
@@ -66,31 +75,20 @@ fun EmailSignInButton(
                 }
             }
         )
-        Button(
-            modifier = Modifier.fillMaxWidth(),
+        GradientButton(
+            text = "Sign in",
             onClick = {
                 keyboardController?.hide()
                 emailSignIn(email, password)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-        ) {
-            Text(text = "Sign in")
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
+            }
+        )
+        GradientButton(
+            text = "Sign up",
             onClick = {
                 keyboardController?.hide()
                 emailSignUp(email, password)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.primary
-            )
-        ) {
-            Text(text = "Sign up")
-        }
+            }
+        )
     }
 }
 

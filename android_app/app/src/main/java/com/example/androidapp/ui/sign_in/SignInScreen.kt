@@ -43,9 +43,6 @@ fun SignInScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(20.dp))
-                    .background(color = MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp), shape = RoundedCornerShape(20.dp))
-                    .padding(12.dp)
             ) {
                 EmailSignInButton(
                     emailSignIn = emailAuth::signIn,
