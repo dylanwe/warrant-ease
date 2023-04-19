@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.androidapp'
+    namespace 'com.warrantease.androidapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.androidapp"
+        applicationId "com.warrantease.androidapp"
         minSdk 26
         targetSdk 33
         versionCode 1
