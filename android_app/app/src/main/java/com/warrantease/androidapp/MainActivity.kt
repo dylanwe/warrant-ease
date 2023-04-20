@@ -9,13 +9,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.warrantease.androidapp.auth.GoogleAuth
-import com.warrantease.androidapp.navigation.AppNavigation
-import com.warrantease.androidapp.ui.theme.AndroidAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.warrantease.androidapp.auth.GoogleAuth
+import com.warrantease.androidapp.generic.di.AppModule
+import com.warrantease.androidapp.navigation.AppNavigation
+import com.warrantease.androidapp.ui.theme.AndroidAppTheme
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.context.startKoin
+import org.koin.ksp.generated.*
 
 /**
  * Activity with Firebase Authentication.
@@ -23,12 +28,19 @@ import com.google.firebase.ktx.Firebase
  *
  * @author Dylan Weijgertze
  */
-class MainActivity : ComponentActivity(), AuthStateListener {
+class MainActivity : ComponentActivity(), AuthStateListener, KoinComponent {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleAuth: GoogleAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        startKoin {
+            androidContext(this@MainActivity)
+            modules(
+                AppModule().module
+            )
+        }
 
         auth = Firebase.auth
         // Init auth providers

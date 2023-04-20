@@ -14,11 +14,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.warrantease.androidapp.viewmodel.WarrantyViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import org.koin.android.annotation.KoinViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: WarrantyViewModel = viewModel()
+    viewModel: WarrantyViewModel = koinViewModel()
 ) {
     viewModel.getExample()
     val example by viewModel.example.observeAsState()
@@ -38,6 +40,7 @@ fun HomeScreen(
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 30.sp
             )
+            Text(text = viewModel.hello)
             if (example == null) {
                 Text(text = "Loading...")
             } else {

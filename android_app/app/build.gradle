@@ -2,7 +2,10 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'com.google.devtools.ksp'
 }
+
+apply plugin: 'com.google.devtools.ksp'
 
 android {
     namespace 'com.warrantease.androidapp'
@@ -27,6 +30,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // For KSP
+    kotlin {
+        sourceSets {
+            main.kotlin.srcDirs += 'build/generated/ksp/debug/kotlin'
+            test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -45,10 +57,18 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
 }
 
 dependencies {
     def compose_version = '1.2.0'
+    def koin_version = '3.3.3'
+    def koin_ksp_version = '1.1.1'
+    def koin_compose_version = '3.4.2'
 
     implementation 'com.google.firebase:firebase-bom:31.3.0'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'
@@ -74,6 +94,12 @@ dependencies {
     // image loading
     implementation("io.coil-kt:coil:2.1.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
+
+    // Koin DI
+    implementation("io.insert-koin:koin-android:$koin_version")
+    implementation("io.insert-koin:koin-androidx-compose:$koin_compose_version")
+    implementation("io.insert-koin:koin-annotations:$koin_ksp_version")
+    ksp "io.insert-koin:koin-ksp-compiler:$koin_ksp_version"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
