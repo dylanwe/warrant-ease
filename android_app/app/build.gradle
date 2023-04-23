@@ -69,29 +69,31 @@ dependencies {
     def koin_version = '3.3.3'
     def koin_ksp_version = '1.1.1'
     def koin_compose_version = '3.4.2'
+    def directions_version = '1.7.33-beta'
 
     implementation 'com.google.firebase:firebase-bom:31.3.0'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
-    // view-model
+    // View-model
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_version"
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
-    // navigation
-    def nav_version = "2.5.3"
-    implementation "androidx.navigation:navigation-compose:$nav_version"
+    // Compose - Navigation
+    implementation "io.github.raamcosta.compose-destinations:core:$directions_version"
+    implementation "io.github.raamcosta.compose-destinations:animations-core:$directions_version"
+    ksp "io.github.raamcosta.compose-destinations:ksp:$directions_version"
 
-    //network libraries
+    // Network libraries
     implementation 'com.squareup.retrofit2:retrofit:2.8.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
     implementation 'com.squareup.okhttp3:okhttp:4.4.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
 
-    // coroutines
+    // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1'
 
-    // image loading
+    // Image loading
     implementation("io.coil-kt:coil:2.1.0")
     implementation("io.coil-kt:coil-compose:2.1.0")
 

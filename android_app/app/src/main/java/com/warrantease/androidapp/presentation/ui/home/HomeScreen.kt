@@ -12,9 +12,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ramcosta.composedestinations.annotation.Destination
 import com.warrantease.androidapp.presentation.viewmodel.WarrantyViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@Destination
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(

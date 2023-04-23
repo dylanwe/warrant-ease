@@ -14,19 +14,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.auth.EmailAuth
 import com.warrantease.androidapp.auth.GoogleAuth
-import com.warrantease.androidapp.presentation.ui.Screens
 import com.warrantease.androidapp.presentation.ui.components.EmailForm
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.warrantease.androidapp.presentation.ui.destinations.SignUpScreenDestination
 
+@RootNavGraph(start = true)
+@Destination
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SignInScreen(navController: NavController) {
+fun SignInScreen(navigator: DestinationsNavigator) {
     val auth = Firebase.auth
     val googleAuth = GoogleAuth(auth, LocalContext.current as Activity)
     val emailAuth = EmailAuth(auth)
@@ -93,7 +97,7 @@ fun SignInScreen(navController: NavController) {
                     text = "Sign up",
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
-                        navController.navigate(Screens.SignUpScreen.route)
+                        navigator.navigate(SignUpScreenDestination)
                     }
                 )
             }

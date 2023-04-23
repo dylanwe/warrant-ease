@@ -8,14 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuth.AuthStateListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.ramcosta.composedestinations.DestinationsNavHost
 import com.warrantease.androidapp.auth.GoogleAuth
 import com.warrantease.androidapp.generic.di.AppModule
-import com.warrantease.androidapp.presentation.navigation.AppNavigation
+import com.warrantease.androidapp.presentation.ui.NavGraphs
+import com.warrantease.androidapp.presentation.ui.destinations.HomeScreenDestination
+import com.warrantease.androidapp.presentation.ui.destinations.SignInScreenDestination
 import com.warrantease.androidapp.presentation.ui.theme.AndroidAppTheme
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
@@ -77,11 +79,14 @@ class MainActivity : ComponentActivity(), AuthStateListener, KoinComponent {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navHostController = rememberNavController()
-                    AppNavigation(
-                        navHostController = navHostController,
-                        firebaseUser = firebaseAuth.currentUser
-                    )
+                    // Pick start navigation
+                    val start = if (firebaseAuth.currentUser != null) {
+                        HomeScreenDestination
+                    } else {
+                        SignInScreenDestination
+                    }
+
+                    DestinationsNavHost(navGraph = NavGraphs.root, startRoute = start)
                 }
             }
         }
