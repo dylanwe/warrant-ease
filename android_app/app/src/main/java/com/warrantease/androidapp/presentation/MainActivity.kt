@@ -2,6 +2,7 @@ package com.warrantease.androidapp.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +18,9 @@ import com.warrantease.androidapp.auth.GoogleAuth
 import com.warrantease.androidapp.generic.di.AppModule
 import com.warrantease.androidapp.presentation.ui.NavGraphs
 import com.warrantease.androidapp.presentation.ui.destinations.HomeScreenDestination
+import com.warrantease.androidapp.presentation.ui.destinations.OnboardingScreenDestination
 import com.warrantease.androidapp.presentation.ui.destinations.SignInScreenDestination
+import com.warrantease.androidapp.presentation.ui.onboarding.OnboardingScreen
 import com.warrantease.androidapp.presentation.ui.theme.AndroidAppTheme
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.component.KoinComponent
@@ -81,7 +84,11 @@ class MainActivity : ComponentActivity(), AuthStateListener, KoinComponent {
                 ) {
                     // Pick start navigation
                     val start = if (firebaseAuth.currentUser != null) {
-                        HomeScreenDestination
+                        if (firebaseAuth.currentUser!!.displayName.isNullOrBlank()) {
+                            OnboardingScreenDestination
+                        } else {
+                            HomeScreenDestination
+                        }
                     } else {
                         SignInScreenDestination
                     }

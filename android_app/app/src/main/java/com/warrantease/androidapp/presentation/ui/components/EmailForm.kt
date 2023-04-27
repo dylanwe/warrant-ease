@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.warrantease.androidapp.R
-import com.warrantease.androidapp.presentation.components.GradientButton
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

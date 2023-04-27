@@ -35,7 +35,7 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Hello,",
+                text = "Hello, ${user.displayName}",
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 30.sp

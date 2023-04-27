@@ -1,4 +1,4 @@
-package com.warrantease.androidapp.presentation.components
+package com.warrantease.androidapp.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
