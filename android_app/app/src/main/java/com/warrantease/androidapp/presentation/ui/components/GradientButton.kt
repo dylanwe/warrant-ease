@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
 
@@ -33,7 +34,7 @@ fun GradientButton(text: String, onClick: () -> Unit) {
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = text, color = AppTheme.neutral950)
+            Text(text = text, color = AppTheme.neutral950, fontWeight = FontWeight.Bold)
         }
     }
 }

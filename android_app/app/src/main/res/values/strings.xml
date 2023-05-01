@@ -2,4 +2,11 @@
     <string name="app_name">Android App</string>
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
+    <string name="continue_cta">Continue</string>
+    <string name="username_placeholder">Enter a Username</string>
+    <string name="username_label">Username</string>
+    <string name="username_title">Almost done</string>
+    <string name="username_subtitle">Pick a Username</string>
+    <string name="username_error">Could not save username</string>
+    <string name="username_short_error">Username must be atleast 2 charachters</string>
 </resources>
