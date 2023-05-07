@@ -28,11 +28,12 @@ fun HomeScreen(
 
     Scaffold { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(
+                top = innerPadding.calculateTopPadding(),
+                bottom = innerPadding.calculateBottomPadding(),
+                start = 18.dp,
+                end = 18.dp
+            )
         ) {
             Text(
                 text = "Hello, ${user.displayName}",
