@@ -9,4 +9,7 @@
     <string name="username_subtitle">Pick a Username</string>
     <string name="username_error">Could not save username</string>
     <string name="username_short_error">Username must be atleast 2 charachters</string>
+    <string name="nav_home_label">Home</string>
+    <string name="nav_warranties_label">Warranties</string>
+    <string name="nav_settings_label">Settings</string>
 </resources>
