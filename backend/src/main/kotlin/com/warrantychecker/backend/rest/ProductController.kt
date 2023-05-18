@@ -26,7 +26,7 @@ class ProductController(
             .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the user") }
 
         val products = productRepository
-            .findAllByUser(user = user)
+            .findAllByUserOrderByExpirationDateDesc(user = user)
 
         return ResponseEntity
             .ok()
@@ -74,5 +74,33 @@ class ProductController(
         return ResponseEntity
             .ok()
             .body(product)
+    }
+
+    @GetMapping
+    fun searchByName(authentication: Authentication, @RequestParam name: String): ResponseEntity<List<Product>> {
+        val user = userRepository
+            .findById(authentication.name)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the user") }
+
+        val products = productRepository
+            .findAllByUserAndNameOrderByExpirationDateDesc(user = user, name = name)
+
+        return ResponseEntity
+            .ok()
+            .body(products)
+    }
+
+    @GetMapping
+    fun getTopExpiration(authentication: Authentication, @RequestParam top: Int): ResponseEntity<List<Product>> {
+        val user = userRepository
+            .findById(authentication.name)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the user") }
+
+        val products = productRepository
+            .findTopByUserOrderByExpirationDateDesc(user = user, top = top)
+
+        return ResponseEntity
+            .ok()
+            .body(products)
     }
 }

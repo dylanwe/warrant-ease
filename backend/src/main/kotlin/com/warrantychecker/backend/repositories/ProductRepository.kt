@@ -6,7 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface ProductRepository : JpaRepository<Product, Long> {
-    fun findAllByUser(user: User): List<Product>
+    fun findAllByUserOrderByExpirationDateDesc(user: User): List<Product>
+
+    fun findTopByUserOrderByExpirationDateDesc(user: User, top: Int): List<Product>
+
+    fun findAllByUserAndNameOrderByExpirationDateDesc(user: User, name: String): List<Product>
 
     fun findByIdAndUser(id: Long, user: User): Optional<Product>
 }
