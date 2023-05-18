@@ -1,5 +1,6 @@
 package com.warrantease.androidapp.data.api
 
+import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.runBlocking
@@ -19,6 +20,8 @@ class AuthorizationInterceptor : Interceptor {
             val user = Firebase.auth.currentUser!!
             return@runBlocking user.getIdToken(true).await()
         }
+
+        Log.i("TOKEN", tokenTask.token.toString())
 
         // create a new request with the JWT
         val authorizationRequest = chain
