@@ -1,10 +1,12 @@
 package com.warrantease.androidapp.data.api
 
 import com.google.gson.GsonBuilder
+import com.warrantease.androidapp.data.api.utils.LocalDateAdapter
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 
 /**
@@ -25,6 +27,7 @@ class WarrantyApi {
             }.build()
 
             val gson = GsonBuilder()
+                .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
                 .serializeNulls()
                 .create()
 

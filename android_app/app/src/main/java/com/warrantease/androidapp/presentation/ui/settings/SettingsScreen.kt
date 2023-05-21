@@ -10,8 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,8 +29,7 @@ fun SettingsScreen(
     navController: NavController,
     viewModel: WarrantyViewModel = koinViewModel()
 ) {
-    viewModel.getExample()
-    val example by viewModel.example.observeAsState()
+    viewModel.getWarranties()
     val user = Firebase.auth.currentUser!!
 
     Scaffold(
@@ -53,11 +50,6 @@ fun SettingsScreen(
                 fontSize = 30.sp
             )
             Text(text = "Settings")
-            if (example == null) {
-                Text(text = "Loading...")
-            } else {
-                Text(text = example!!.toString())
-            }
 
             Spacer(modifier = Modifier.height(10.dp))
             Text(text = user.email ?: "")

@@ -1,14 +1,12 @@
 package com.warrantease.androidapp.data.api
 
-import com.warrantease.androidapp.domain.model.Example
+import com.warrantease.androidapp.data.api.models.WarrantyResponse
 import retrofit2.http.GET
 
 /**
- * Example of an API service
- *
  * @author Dylan Weijgertze
  */
 interface WarrantyApiService {
-    @GET("/private")
-    suspend fun getExample(): Example
+    @GET("/api/v1/warranty")
+    suspend fun getWarranties(): List<WarrantyResponse>
 }

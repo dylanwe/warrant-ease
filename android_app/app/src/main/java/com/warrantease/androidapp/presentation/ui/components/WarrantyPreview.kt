@@ -24,27 +24,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.warrantease.androidapp.R
+import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.theme.AndroidAppTheme
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
+import java.time.LocalDate
 
 @Composable
-fun WarrantPreview() {
-    val title = "Macbook Pro 14-Ich"
-    val date = "20-04-2024"
-    val site = "www.apple.com"
+fun WarrantPreview(warranty: Warranty) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .border(width = 1.dp, AppTheme.neutral300, shape = RoundedCornerShape(10.dp))
-            .clickable {  }
+            .clickable { }
             .background(AppTheme.white)
             .padding(horizontal = 18.dp, vertical = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(text = title, fontWeight = FontWeight.Bold, color = AppTheme.neutral800)
+            Text(text = warranty.name, fontWeight = FontWeight.Bold, color = AppTheme.neutral800)
             Row(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -56,7 +55,11 @@ fun WarrantPreview() {
                         tint = AppTheme.neutral400,
                         modifier = Modifier.size(18.dp)
                     )
-                    Text(text = date, color = AppTheme.neutral400, fontSize = 14.sp)
+                    Text(
+                        text = warranty.expirationDate.toString(),
+                        color = AppTheme.neutral400,
+                        fontSize = 14.sp
+                    )
                 }
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -68,7 +71,7 @@ fun WarrantPreview() {
                         tint = AppTheme.neutral400,
                         modifier = Modifier.size(18.dp)
                     )
-                    Text(text = site, color = AppTheme.neutral400, fontSize = 14.sp)
+                    Text(text = warranty.store, color = AppTheme.neutral400, fontSize = 14.sp)
                 }
             }
         }
@@ -83,7 +86,17 @@ fun WarrantPreview() {
 @Preview
 @Composable
 private fun Preview() {
+    val warranty = Warranty(
+        id = 1,
+        name = "Macbook Pro",
+        store = "Apple",
+        notes = "",
+        buyDate = LocalDate.now(),
+        expirationDate = LocalDate.now(),
+        reminderDate = LocalDate.now()
+    )
+
     AndroidAppTheme {
-        WarrantPreview()
+        WarrantPreview(warranty)
     }
 }
