@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'kotlinx-serialization'
     id 'com.google.devtools.ksp'
 }
 
@@ -70,6 +71,7 @@ dependencies {
     def koin_ksp_version = '1.1.1'
     def koin_compose_version = '3.4.2'
     def directions_version = '1.7.33-beta'
+    def ktor_version = '2.0.0'
 
     implementation 'com.google.firebase:firebase-bom:31.3.0'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'
@@ -84,11 +86,15 @@ dependencies {
     implementation "io.github.raamcosta.compose-destinations:animations-core:$directions_version"
     ksp "io.github.raamcosta.compose-destinations:ksp:$directions_version"
 
-    // Network libraries
-    implementation 'com.squareup.retrofit2:retrofit:2.8.1'
-    implementation 'com.squareup.retrofit2:converter-gson:2.8.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.4.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.0'
+    // Ktor client
+    // Networking
+    implementation "io.ktor:ktor-client-okhttp:$ktor_version"
+    implementation "io.ktor:ktor-client-serialization:$ktor_version"
+    implementation "io.ktor:ktor-client-logging-jvm:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
+
+    // Serialization
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1'
