@@ -30,36 +30,36 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: WarrantyViewModel = koinViewModel()
+    viewModel: WarrantyViewModel = koinViewModel(),
 ) {
-    viewModel.getWarranties()
-    val warranties by viewModel.warranties.collectAsState()
-    val uiState by viewModel.state.collectAsState()
-    val user = Firebase.auth.currentUser!!
+	viewModel.getTopWarranties()
+	val warranties by viewModel.topWarranties.collectAsState()
+	val uiState by viewModel.state.collectAsState()
+	val user = Firebase.auth.currentUser!!
 
-    Content(navController = navController, user = user) {
-        when (uiState) {
-            UIState.NORMAL -> {
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    items(items = warranties) { warranty ->
-                        WarrantPreview(warranty)
-                    }
-                }
-            }
+	Content(navController = navController, user = user) {
+		when (uiState) {
+			UIState.NORMAL -> {
+				LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+					items(items = warranties) { warranty ->
+						WarrantPreview(warranty)
+					}
+				}
+			}
 
-            UIState.EMPTY -> {
-                Text(text = "Empty")
-            }
+			UIState.EMPTY -> {
+				Text(text = "Empty")
+			}
 
-            UIState.LOADING -> {
-                Text(text = "Loading")
-            }
+			UIState.LOADING -> {
+				Text(text = "Loading")
+			}
 
-            UIState.ERROR -> {
-                Text(text = "Error")
-            }
-        }
-    }
+			UIState.ERROR -> {
+				Text(text = "Error")
+			}
+		}
+	}
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,48 +67,48 @@ fun HomeScreen(
 private fun Content(
     navController: NavController,
     user: FirebaseUser,
-    content: @Composable (() -> Unit)
+    content: @Composable (() -> Unit),
 ) {
-    Scaffold(
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text(text = "Home") },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = AppTheme.white
-                )
-            )
-        },
-        bottomBar = { BottomNav(navController) }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(
-                top = innerPadding.calculateTopPadding(),
-                bottom = innerPadding.calculateBottomPadding(),
-                start = 18.dp,
-                end = 18.dp
-            )
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.outline_wb_sunny_24),
-                    contentDescription = "time icon",
-                    tint = AppTheme.neutral500,
-                    modifier = Modifier.size(18.dp)
-                )
-                Text(text = "Good Morning,", fontSize = 16.sp, color = AppTheme.neutral500)
-            }
-            Text(
-                text = "${user.displayName}",
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
-            )
+	Scaffold(
+		topBar = {
+			CenterAlignedTopAppBar(
+				title = { Text(text = "Home") },
+				colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+					containerColor = AppTheme.white
+				)
+			)
+		},
+		bottomBar = { BottomNav(navController) }
+	) { innerPadding ->
+		Column(
+			modifier = Modifier.padding(
+				top = innerPadding.calculateTopPadding(),
+				bottom = innerPadding.calculateBottomPadding(),
+				start = 18.dp,
+				end = 18.dp
+			)
+		) {
+			Row(
+				verticalAlignment = Alignment.CenterVertically,
+				horizontalArrangement = Arrangement.spacedBy(4.dp)
+			) {
+				Icon(
+					painter = painterResource(id = R.drawable.outline_wb_sunny_24),
+					contentDescription = "time icon",
+					tint = AppTheme.neutral500,
+					modifier = Modifier.size(18.dp)
+				)
+				Text(text = "Good Morning,", fontSize = 16.sp, color = AppTheme.neutral500)
+			}
+			Text(
+				text = "${user.displayName}",
+				fontWeight = FontWeight.Bold,
+				fontSize = 24.sp
+			)
 
-            Spacer(modifier = Modifier.height(20.dp))
+			Spacer(modifier = Modifier.height(20.dp))
 
-            content()
-        }
-    }
+			content()
+		}
+	}
 }

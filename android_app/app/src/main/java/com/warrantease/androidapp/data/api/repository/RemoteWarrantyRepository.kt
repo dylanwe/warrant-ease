@@ -8,9 +8,13 @@ import org.koin.core.annotation.Factory
 
 @Factory
 class RemoteWarrantyRepository(
-    private val warrantyService: WarrantyService
+    private val warrantyService: WarrantyService,
 ) : WarrantyRepository {
-    override suspend fun getAllWarranties(): List<Warranty> {
-        return warrantyService.getAllWarranties().toDomain()
-    }
+	override suspend fun getAllWarranties(): List<Warranty> {
+		return warrantyService.getAllWarranties().toDomain()
+	}
+
+	override suspend fun getTop4Warranties(): List<Warranty> {
+		return warrantyService.getTop4Warranties().toDomain()
+	}
 }

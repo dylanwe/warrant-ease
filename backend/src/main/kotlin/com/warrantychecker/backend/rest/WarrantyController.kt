@@ -40,7 +40,7 @@ class WarrantyController(
     }
 
     @PostMapping
-    fun saveProduct(
+    fun saveWarranty(
         authentication: Authentication,
         @RequestBody warrantyPostRequest: WarrantyPostRequest
     ): ResponseEntity<Any> {

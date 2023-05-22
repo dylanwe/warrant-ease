@@ -1,14 +1,18 @@
 package com.warrantease.androidapp.data.api
 
-import com.warrantease.androidapp.data.api.models.WarrantyResponse
 import com.warrantease.androidapp.data.api.network.HttpClientProvider
+import com.warrantease.androidapp.data.api.response.WarrantyGetResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import org.koin.core.annotation.Factory
 
 @Factory
 class WarrantyService(private val httpClientProvider: HttpClientProvider) {
-    suspend fun getAllWarranties(): List<WarrantyResponse> {
-        return httpClientProvider.client.get("/api/v1/warranty").body()
-    }
+	suspend fun getAllWarranties(): List<WarrantyGetResponse> {
+		return httpClientProvider.client.get("/api/v1/warranty").body()
+	}
+
+	suspend fun getTop4Warranties(): List<WarrantyGetResponse> {
+		return httpClientProvider.client.get("/api/v1/warranty/top").body()
+	}
 }

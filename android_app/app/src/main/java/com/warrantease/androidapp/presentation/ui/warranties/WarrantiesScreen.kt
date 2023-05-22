@@ -26,33 +26,33 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun WarrantiesScreen(
     navController: NavController,
-    viewModel: WarrantyViewModel = koinViewModel()
+    viewModel: WarrantyViewModel = koinViewModel(),
 ) {
-    viewModel.getWarranties()
-    val user = Firebase.auth.currentUser!!
+	viewModel.getTopWarranties()
+	val user = Firebase.auth.currentUser!!
 
-    Scaffold(
-        bottomBar = { BottomNav(navController) }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(
-                top = innerPadding.calculateTopPadding(),
-                bottom = innerPadding.calculateBottomPadding(),
-                start = 18.dp,
-                end = 18.dp
-            )
-        ) {
-            Text(
-                text = "Hello, ${user.displayName}",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium,
-                fontSize = 30.sp
-            )
-            Text(text = "Warranties")
+	Scaffold(
+		bottomBar = { BottomNav(navController) }
+	) { innerPadding ->
+		Column(
+			modifier = Modifier.padding(
+				top = innerPadding.calculateTopPadding(),
+				bottom = innerPadding.calculateBottomPadding(),
+				start = 18.dp,
+				end = 18.dp
+			)
+		) {
+			Text(
+				text = "Hello, ${user.displayName}",
+				fontWeight = FontWeight.Bold,
+				style = MaterialTheme.typography.titleMedium,
+				fontSize = 30.sp
+			)
+			Text(text = "Warranties")
 
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(text = user.email ?: "")
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-    }
+			Spacer(modifier = Modifier.height(10.dp))
+			Text(text = user.email ?: "")
+			Spacer(modifier = Modifier.height(10.dp))
+		}
+	}
 }
