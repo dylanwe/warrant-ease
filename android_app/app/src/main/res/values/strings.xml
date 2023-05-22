@@ -12,4 +12,11 @@
     <string name="nav_home_label">Home</string>
     <string name="nav_warranties_label">Warranties</string>
     <string name="nav_settings_label">Settings</string>
+    <string name="search_bar_warranty_hint">Search warranties by title</string>
+    <string name="welcome_good_morning">Good Morning</string>
+    <string name="welcome_good_afternoon">Good Afternoon</string>
+    <string name="welcome_good_evening">Good Evening</string>
+    <string name="welcome_good_night">Good Night</string>
+    <string name="see_all">See All</string>
+    <string name="upcoming_expirations">Upcoming expirations</string>
 </resources>

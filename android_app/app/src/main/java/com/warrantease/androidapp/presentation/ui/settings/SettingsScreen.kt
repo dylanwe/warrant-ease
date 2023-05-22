@@ -19,7 +19,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.ramcosta.composedestinations.annotation.Destination
 import com.warrantease.androidapp.presentation.ui.components.BottomNav
-import com.warrantease.androidapp.presentation.viewmodel.WarrantyViewModel
+import com.warrantease.androidapp.presentation.viewmodel.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Destination
@@ -27,7 +27,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    viewModel: WarrantyViewModel = koinViewModel(),
+    viewModel: HomeViewModel = koinViewModel(),
 ) {
 	viewModel.getTopWarranties()
 	val user = Firebase.auth.currentUser!!

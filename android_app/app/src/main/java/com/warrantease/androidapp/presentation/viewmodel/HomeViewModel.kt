@@ -14,23 +14,23 @@ import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class WarrantyViewModel(
+class HomeViewModel(
     private val warrantyRepository: WarrantyRepository,
 ) : ViewModel() {
 
 	private val _state = MutableStateFlow(UIState.LOADING)
 	val state: StateFlow<UIState> = _state.asStateFlow()
 
-	private val _warranties = MutableStateFlow<List<Warranty>>(emptyList())
-	val warranties: StateFlow<List<Warranty>> = _warranties.asStateFlow()
+	private val _topWarranties = MutableStateFlow<List<Warranty>>(emptyList())
+	val topWarranties: StateFlow<List<Warranty>> = _topWarranties.asStateFlow()
 
-	fun getWarranties() {
+	fun getTopWarranties() {
 		_state.value = UIState.LOADING
 
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				_warranties.value = warrantyRepository.getAllWarranties()
-				if (warranties.value.isEmpty()) {
+				_topWarranties.value = warrantyRepository.getAllWarranties()
+				if (topWarranties.value.isEmpty()) {
 					_state.value = UIState.EMPTY
 				} else {
 					_state.value = UIState.NORMAL
