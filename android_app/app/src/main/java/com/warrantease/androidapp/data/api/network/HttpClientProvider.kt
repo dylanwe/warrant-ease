@@ -1,6 +1,5 @@
 package com.warrantease.androidapp.data.api.network
 
-import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import io.ktor.client.HttpClient
@@ -47,8 +46,6 @@ class HttpClientProvider {
                 val user = Firebase.auth.currentUser!!
                 return@runBlocking user.getIdToken(true).await()
             }
-
-            Log.i("token", tokenTask.token.toString())
 
             header("Authorization", "Bearer ${tokenTask.token}")
         }
