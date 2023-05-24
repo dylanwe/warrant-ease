@@ -8,11 +8,11 @@ import java.util.*
 
 @Repository
 interface WarrantyRepository : JpaRepository<Warranty, Long> {
-    fun findAllByUserOrderByExpirationDateDesc(user: User): List<Warranty>
+    fun findAllByUserOrderByExpirationDateAsc(user: User): List<Warranty>
 
-    fun findTop4ByUserOrderByExpirationDateDesc(user: User): List<Warranty>
+    fun findTop4ByUserOrderByExpirationDateAsc(user: User): List<Warranty>
 
-    fun findAllByUserAndNameOrderByExpirationDateDesc(user: User, name: String): List<Warranty>
+    fun findAllByUserAndNameOrderByExpirationDateAsc(user: User, name: String): List<Warranty>
 
     fun findByIdAndUser(id: Long, user: User): Optional<Warranty>
 }
