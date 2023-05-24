@@ -16,8 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,15 +28,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
+import com.warrantease.androidapp.presentation.ui.components.BottomNav
 import com.warrantease.androidapp.presentation.ui.components.GradientButton
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
 import com.warrantease.androidapp.presentation.viewmodel.AddWarrantyViewModel
+import com.warrantease.androidapp.presentation.viewmodel.uiState.UIState
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -48,7 +51,30 @@ fun AddWarrantyScreen(
 	viewModel: AddWarrantyViewModel = koinViewModel(),
 ) {
 	val uiState by viewModel.saveWarrantyState.collectAsState()
+	val context = LocalContext.current
 	Content(navController = navController, viewModel = viewModel)
+
+	when (uiState) {
+		UIState.NORMAL -> {
+			Toast.makeText(
+				context,
+				context.getString(R.string.saved_warranty),
+				Toast.LENGTH_SHORT
+			).show()
+
+			navController.popBackStack()
+		}
+
+		UIState.ERROR -> {
+			Toast.makeText(
+				context,
+				context.getString(R.string.warranty_save_error),
+				Toast.LENGTH_SHORT
+			).show()
+		}
+
+		else -> {}
+	}
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,9 +95,9 @@ private fun Content(
 	var expiration by remember {
 		mutableStateOf(TextFieldValue(""))
 	}
-	var reminder by remember {
-		mutableStateOf(TextFieldValue(""))
-	}
+	// var reminder by remember {
+	// 	mutableStateOf(TextFieldValue(""))
+	// }
 	var notes by remember {
 		mutableStateOf(TextFieldValue(""))
 	}
@@ -80,8 +106,8 @@ private fun Content(
 
 	Scaffold(
 		topBar = {
-			SmallTopAppBar(
-				title = { Text(text = "Add warranty") },
+			TopAppBar(
+				title = { Text(text = stringResource(id = R.string.add_warranty_title)) },
 				navigationIcon = {
 					IconButton(onClick = { navController.popBackStack() }) {
 						Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
@@ -91,7 +117,8 @@ private fun Content(
 					containerColor = AppTheme.white
 				)
 			)
-		}
+		},
+		bottomBar = { BottomNav(navController = navController) }
 	) { innerPadding ->
 		Column(
 			verticalArrangement = Arrangement.SpaceBetween,
@@ -111,29 +138,33 @@ private fun Content(
 			) {
 
 				OutlinedTextField(
-					label = { Text(text = "Product name") },
-					placeholder = { Text(text = "Enter a product name") },
+					label = { Text(text = stringResource(id = R.string.add_warranty_name)) },
+					placeholder = { Text(text = stringResource(id = R.string.add_warranty_name_hint)) },
 					value = name.text,
 					onValueChange = { name = TextFieldValue(it) },
 					shape = RoundedCornerShape(18.dp),
-					modifier = Modifier.fillMaxWidth()
+					modifier = Modifier.fillMaxWidth(),
+					maxLines = 1,
+					singleLine = true
 				)
 
 				OutlinedTextField(
-					label = { Text(text = "Store") },
-					placeholder = { Text(text = "Enter the store name") },
+					label = { Text(text = stringResource(id = R.string.add_warranty_store)) },
+					placeholder = { Text(text = stringResource(id = R.string.add_warranty_store_hint)) },
 					value = store.text,
 					onValueChange = { store = TextFieldValue(it) },
 					shape = RoundedCornerShape(18.dp),
-					modifier = Modifier.fillMaxWidth()
+					modifier = Modifier.fillMaxWidth(),
+					maxLines = 1,
+					singleLine = true
 				)
 
 				Row(
 					horizontalArrangement = Arrangement.spacedBy(16.dp)
 				) {
 					OutlinedTextField(
-						label = { Text(text = "Buy Date") },
-						placeholder = { Text(text = "13-07-2020") },
+						label = { Text(text = stringResource(id = R.string.add_warranty_buy_date)) },
+						placeholder = { Text(text = stringResource(id = R.string.add_warranty_date_hint)) },
 						value = buyDate.text,
 						onValueChange = { buyDate = TextFieldValue(it) },
 						shape = RoundedCornerShape(18.dp),
@@ -147,8 +178,8 @@ private fun Content(
 						}
 					)
 					OutlinedTextField(
-						label = { Text(text = "Expiration") },
-						placeholder = { Text(text = "13-07-2020") },
+						label = { Text(text = stringResource(id = R.string.add_warranty_expiration_date)) },
+						placeholder = { Text(text = stringResource(id = R.string.add_warranty_date_hint)) },
 						value = expiration.text,
 						onValueChange = { expiration = TextFieldValue(it) },
 						shape = RoundedCornerShape(18.dp),
@@ -163,24 +194,24 @@ private fun Content(
 					)
 				}
 
-				OutlinedTextField(
-					label = { Text(text = "Reminder") },
-					placeholder = { Text(text = "13-07-2020") },
-					value = reminder.text,
-					onValueChange = { reminder = TextFieldValue(it) },
-					shape = RoundedCornerShape(18.dp),
-					modifier = Modifier.fillMaxWidth(),
-					trailingIcon = {
-						Icon(
-							painter = painterResource(id = R.drawable.outline_notifications_24),
-							contentDescription = "reminder",
-							tint = AppTheme.neutral500
-						)
-					}
-				)
+				// OutlinedTextField(
+				// 	label = { Text(text = "Reminder") },
+				// 	placeholder = { Text(text = "13-07-2020") },
+				// 	value = reminder.text,
+				// 	onValueChange = { reminder = TextFieldValue(it) },
+				// 	shape = RoundedCornerShape(18.dp),
+				// 	modifier = Modifier.fillMaxWidth(),
+				// 	trailingIcon = {
+				// 		Icon(
+				// 			painter = painterResource(id = R.drawable.outline_notifications_24),
+				// 			contentDescription = "reminder",
+				// 			tint = AppTheme.neutral500
+				// 		)
+				// 	}
+				// )
 
 				OutlinedTextField(
-					label = { Text(text = "Notes") },
+					label = { Text(text = stringResource(id = R.string.add_warranty_notes)) },
 					placeholder = { Text(text = "...") },
 					value = notes.text,
 					onValueChange = { notes = TextFieldValue(it) },
@@ -197,7 +228,7 @@ private fun Content(
 						name = name.text,
 						buy = buyDate.text,
 						expiration = expiration.text,
-						reminder = reminder.text,
+						// reminder = reminder.text,
 						notes = notes.text
 					)
 					if (areInputsValid) {
@@ -210,7 +241,8 @@ private fun Content(
 							notes = notes.text,
 							buyDate = LocalDate.parse(buyDate.text, formatter),
 							expirationDate = LocalDate.parse(expiration.text, formatter),
-							reminderDate = LocalDate.parse(reminder.text, formatter)
+							reminderDate = LocalDate.now()
+							// reminderDate = LocalDate.parse(reminder.text, formatter)
 						)
 
 						viewModel.saveWarranty(warranty)
@@ -229,7 +261,7 @@ private fun areInputsValid(
 	name: String,
 	buy: String,
 	expiration: String,
-	reminder: String,
+	// reminder: String,
 	notes: String,
 ): Boolean {
 	val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
@@ -246,7 +278,7 @@ private fun areInputsValid(
 	try {
 		LocalDate.parse(buy, formatter)
 		LocalDate.parse(expiration, formatter)
-		LocalDate.parse(reminder, formatter)
+		// LocalDate.parse(reminder, formatter)
 	} catch (e: Exception) {
 		Toast.makeText(
 			context,
