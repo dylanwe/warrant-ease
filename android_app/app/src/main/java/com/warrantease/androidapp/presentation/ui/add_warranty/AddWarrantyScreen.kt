@@ -1,5 +1,7 @@
 package com.warrantease.androidapp.presentation.ui.add_warranty
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,16 +26,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ramcosta.composedestinations.annotation.Destination
 import com.warrantease.androidapp.R
+import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.components.GradientButton
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
 import com.warrantease.androidapp.presentation.viewmodel.AddWarrantyViewModel
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Destination
 @Composable
@@ -42,13 +48,19 @@ fun AddWarrantyScreen(
 	viewModel: AddWarrantyViewModel = koinViewModel(),
 ) {
 	val uiState by viewModel.saveWarrantyState.collectAsState()
-	Content(navController = navController)
+	Content(navController = navController, viewModel = viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Content(navController: NavController) {
+private fun Content(
+	navController: NavController,
+	viewModel: AddWarrantyViewModel,
+) {
 	var name by remember {
+		mutableStateOf(TextFieldValue(""))
+	}
+	var store by remember {
 		mutableStateOf(TextFieldValue(""))
 	}
 	var buyDate by remember {
@@ -63,6 +75,8 @@ private fun Content(navController: NavController) {
 	var notes by remember {
 		mutableStateOf(TextFieldValue(""))
 	}
+
+	val context = LocalContext.current
 
 	Scaffold(
 		topBar = {
@@ -101,6 +115,15 @@ private fun Content(navController: NavController) {
 					placeholder = { Text(text = "Enter a product name") },
 					value = name.text,
 					onValueChange = { name = TextFieldValue(it) },
+					shape = RoundedCornerShape(18.dp),
+					modifier = Modifier.fillMaxWidth()
+				)
+
+				OutlinedTextField(
+					label = { Text(text = "Store") },
+					placeholder = { Text(text = "Enter the store name") },
+					value = store.text,
+					onValueChange = { store = TextFieldValue(it) },
 					shape = RoundedCornerShape(18.dp),
 					modifier = Modifier.fillMaxWidth()
 				)
@@ -169,9 +192,69 @@ private fun Content(navController: NavController) {
 			GradientButton(
 				text = "Save",
 				onClick = {
-					/* TODO Save warranty */
+					val areInputsValid = areInputsValid(
+						context = context,
+						name = name.text,
+						buy = buyDate.text,
+						expiration = expiration.text,
+						reminder = reminder.text,
+						notes = notes.text
+					)
+					if (areInputsValid) {
+						val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+						val warranty = Warranty(
+							id = -1,
+							name = name.text,
+							store = store.text,
+							notes = notes.text,
+							buyDate = LocalDate.parse(buyDate.text, formatter),
+							expirationDate = LocalDate.parse(expiration.text, formatter),
+							reminderDate = LocalDate.now()
+						)
+
+						viewModel.saveWarranty(warranty)
+					}
 				}
 			)
 		}
 	}
+}
+
+/**
+ * Checks if inputs are valid and shows in toast what is invalid
+ */
+private fun areInputsValid(
+	context: Context,
+	name: String,
+	buy: String,
+	expiration: String,
+	reminder: String,
+	notes: String,
+): Boolean {
+	val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
+	if (name.isBlank()) {
+		Toast.makeText(
+			context,
+			context.getString(R.string.name_should_not_be_empty),
+			Toast.LENGTH_SHORT
+		).show()
+		return false
+	}
+
+	try {
+		LocalDate.parse(buy, formatter)
+		LocalDate.parse(expiration, formatter)
+		LocalDate.parse(reminder, formatter)
+	} catch (e: Exception) {
+		Toast.makeText(
+			context,
+			context.getString(R.string.could_not_parse_dates),
+			Toast.LENGTH_SHORT
+		).show()
+		return false
+	}
+
+	return true
 }

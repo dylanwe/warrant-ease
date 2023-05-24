@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.warrantease.androidapp.domain.WarrantyRepository
+import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.viewmodel.uiState.UIState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +21,12 @@ class AddWarrantyViewModel(
 	private val _saveWarrantyState = MutableStateFlow(UIState.EMPTY)
 	val saveWarrantyState: StateFlow<UIState> = _saveWarrantyState.asStateFlow()
 
-	fun saveWarranty() {
+	fun saveWarranty(warranty: Warranty) {
 		_saveWarrantyState.value = UIState.LOADING
 
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				warrantyRepository.getAllWarranties()
+				warrantyRepository.saveWarranty(warranty)
 				_saveWarrantyState.value = UIState.NORMAL
 			} catch (exception: Exception) {
 				Log.e("ERR", exception.stackTraceToString())

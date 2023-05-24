@@ -19,4 +19,6 @@
     <string name="welcome_good_night">Good Night</string>
     <string name="see_all">See All</string>
     <string name="upcoming_expirations">Upcoming expirations</string>
+    <string name="could_not_parse_dates">Dates not filled in correctly</string>
+    <string name="name_should_not_be_empty">Name should not be empty</string>
 </resources>

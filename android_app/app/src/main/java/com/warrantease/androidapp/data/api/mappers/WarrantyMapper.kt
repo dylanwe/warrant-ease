@@ -1,5 +1,6 @@
 package com.warrantease.androidapp.data.api.mappers
 
+import com.warrantease.androidapp.data.api.request.WarrantyPostRequest
 import com.warrantease.androidapp.data.api.response.WarrantyGetResponse
 import com.warrantease.androidapp.domain.model.Warranty
 
@@ -11,6 +12,17 @@ object WarrantyMapper {
 	fun WarrantyGetResponse.toDomain(): Warranty {
 		return Warranty(
 			id = id,
+			name = name,
+			store = store,
+			notes = notes,
+			buyDate = buyDate,
+			expirationDate = expirationDate,
+			reminderDate = reminderDate
+		)
+	}
+
+	fun Warranty.toRequest(): WarrantyPostRequest {
+		return WarrantyPostRequest(
 			name = name,
 			store = store,
 			notes = notes,
