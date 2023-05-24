@@ -210,7 +210,7 @@ private fun Content(
 							notes = notes.text,
 							buyDate = LocalDate.parse(buyDate.text, formatter),
 							expirationDate = LocalDate.parse(expiration.text, formatter),
-							reminderDate = LocalDate.now()
+							reminderDate = LocalDate.parse(reminder.text, formatter)
 						)
 
 						viewModel.saveWarranty(warranty)
