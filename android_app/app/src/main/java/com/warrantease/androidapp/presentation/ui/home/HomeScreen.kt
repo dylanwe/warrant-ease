@@ -1,6 +1,7 @@
 package com.warrantease.androidapp.presentation.ui.home
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -62,15 +64,49 @@ fun HomeScreen(
 			}
 
 			UIState.EMPTY -> {
-				Text(text = "Empty")
+				Column(
+					modifier = Modifier.fillMaxSize(),
+					horizontalAlignment = Alignment.CenterHorizontally,
+					verticalArrangement = Arrangement.Center
+				) {
+					Image(
+						painter = painterResource(id = R.drawable.state_empty),
+						contentDescription = "empty"
+					)
+					Text(
+						text = stringResource(R.string.state_message_no_warranties),
+						textAlign = TextAlign.Center,
+						color = AppTheme.neutral600
+					)
+				}
 			}
 
 			UIState.LOADING -> {
-				Text(text = "Loading")
+				Column(
+					modifier = Modifier.fillMaxSize(),
+					horizontalAlignment = Alignment.CenterHorizontally,
+					verticalArrangement = Arrangement.Center
+				) {
+					CircularProgressIndicator()
+				}
 			}
 
 			UIState.ERROR -> {
-				Text(text = "Error")
+				Column(
+					modifier = Modifier.fillMaxSize(),
+					horizontalAlignment = Alignment.CenterHorizontally,
+					verticalArrangement = Arrangement.Center
+				) {
+					Image(
+						painter = painterResource(id = R.drawable.state_error),
+						contentDescription = "empty"
+					)
+					Text(
+						text = stringResource(R.string.state_message_error),
+						textAlign = TextAlign.Center,
+						color = AppTheme.neutral600
+					)
+				}
 			}
 		}
 	}

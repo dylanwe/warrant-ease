@@ -39,4 +39,6 @@
     <string name="add_warranty_notes">Notes</string>
     <string name="add_warranty_expiration_smaller">Expiration date can not be smaller than the buy date</string>
     <string name="add_warranty_date_incorrect">All two dates should be filled in correctly</string>
+    <string name="state_message_no_warranties">No warranties found, start by adding some.</string>
+    <string name="state_message_error">Could not connect to the internetl.</string>
 </resources>
