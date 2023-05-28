@@ -143,7 +143,11 @@ private fun Content(
 					containerColor = AppTheme.neutral100,
 				),
 				shape = RoundedCornerShape(35.dp),
-				onClick = { /* TODO open sheet */ }
+				onClick = {
+					navController.navigate(
+						WarrantiesScreenDestination(focusSearchField = true)
+					)
+				}
 			) {
 				Row(
 					modifier = Modifier
@@ -178,7 +182,7 @@ private fun Content(
 					fontWeight = FontWeight.Bold,
 					modifier = Modifier.clickable {
 						navController.navigate(
-							WarrantiesScreenDestination
+							WarrantiesScreenDestination()
 						)
 					}
 				)

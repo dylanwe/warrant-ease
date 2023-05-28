@@ -15,6 +15,10 @@ class RemoteWarrantyRepository(
 		return warrantyService.getAllWarranties().toDomain()
 	}
 
+	override suspend fun getAllWarranties(name: String): List<Warranty> {
+		return warrantyService.getAllWarranties(name).toDomain()
+	}
+
 	override suspend fun getTop4Warranties(): List<Warranty> {
 		return warrantyService.getTop4Warranties().toDomain()
 	}

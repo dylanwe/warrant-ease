@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ramcosta.composedestinations.navigation.navigate
-import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
+import com.ramcosta.composedestinations.spec.Direction
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 import com.ramcosta.composedestinations.utils.startDestination
 import com.warrantease.androidapp.R
@@ -26,13 +26,13 @@ import com.warrantease.androidapp.presentation.ui.destinations.WarrantiesScreenD
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
 
 enum class BottomBarDestination(
-    val direction: DirectionDestinationSpec,
+    val direction: Direction,
     @DrawableRes val icon: Int,
-    @StringRes val label: Int
+    @StringRes val label: Int,
 ) {
     Home(HomeScreenDestination, R.drawable.outline_home_24, R.string.nav_home_label),
     Warranties(
-        WarrantiesScreenDestination,
+        WarrantiesScreenDestination(),
         R.drawable.baseline_format_list_bulleted_24,
         R.string.nav_warranties_label
     ),
@@ -55,8 +55,10 @@ fun BottomNav(
         modifier = Modifier.shadow(elevation = 20.dp)
     ) {
         BottomBarDestination.values().forEach { destination ->
+            val destinationBaseRoute = destination.direction.route.split("?")[0]
+
             NavigationBarItem(
-                selected = currentDestination == destination.direction,
+                selected = currentDestination.baseRoute == destinationBaseRoute,
                 onClick = { navController.navigate(destination.direction) },
                 icon = {
                     Icon(

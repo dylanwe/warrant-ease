@@ -17,6 +17,14 @@ class WarrantyService(private val httpClientProvider: HttpClientProvider) {
 		return httpClientProvider.client.get("/api/v1/warranty").body()
 	}
 
+	suspend fun getAllWarranties(name: String): List<WarrantyGetResponse> {
+		return httpClientProvider.client.get("/api/v1/warranty") {
+			url {
+				parameters.append("name", name)
+			}
+		}.body()
+	}
+
 	suspend fun getTop4Warranties(): List<WarrantyGetResponse> {
 		return httpClientProvider.client.get("/api/v1/warranty/top").body()
 	}

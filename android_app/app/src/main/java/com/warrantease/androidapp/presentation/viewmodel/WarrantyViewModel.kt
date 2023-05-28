@@ -15,7 +15,7 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class WarrantyViewModel(
-    private val warrantyRepository: WarrantyRepository,
+	private val warrantyRepository: WarrantyRepository,
 ) : ViewModel() {
 
 	private val _state = MutableStateFlow(UIState.LOADING)
@@ -24,12 +24,17 @@ class WarrantyViewModel(
 	private val _warranties = MutableStateFlow<List<Warranty>>(emptyList())
 	val warranties: StateFlow<List<Warranty>> = _warranties.asStateFlow()
 
-	fun getWarranties() {
+	fun getWarranties(name: String) {
 		_state.value = UIState.LOADING
 
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				_warranties.value = warrantyRepository.getAllWarranties()
+				if (name.isBlank()) {
+					_warranties.value = warrantyRepository.getAllWarranties()
+				} else {
+					_warranties.value = warrantyRepository.getAllWarranties(name = name)
+				}
+
 				if (warranties.value.isEmpty()) {
 					_state.value = UIState.EMPTY
 				} else {
