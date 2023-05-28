@@ -74,17 +74,19 @@ fun WarrantPreview(warranty: Warranty) {
 						fontSize = 14.sp
 					)
 				}
-				Row(
-					horizontalArrangement = Arrangement.spacedBy(6.dp),
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Icon(
-						painter = painterResource(id = R.drawable.baseline_storefront_24),
-						contentDescription = "expiration",
-						tint = AppTheme.neutral400,
-						modifier = Modifier.size(18.dp)
-					)
-					Text(text = warranty.store, color = AppTheme.neutral400, fontSize = 14.sp)
+				if (warranty.store.isNotBlank()) {
+					Row(
+						horizontalArrangement = Arrangement.spacedBy(6.dp),
+						verticalAlignment = Alignment.CenterVertically
+					) {
+						Icon(
+							painter = painterResource(id = R.drawable.baseline_storefront_24),
+							contentDescription = "expiration",
+							tint = AppTheme.neutral400,
+							modifier = Modifier.size(18.dp)
+						)
+						Text(text = warranty.store, color = AppTheme.neutral400, fontSize = 14.sp)
+					}
 				}
 			}
 		}
