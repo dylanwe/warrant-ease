@@ -12,7 +12,7 @@ interface WarrantyRepository : JpaRepository<Warranty, Long> {
 
     fun findTop4ByUserOrderByExpirationDateAsc(user: User): List<Warranty>
 
-    fun findAllByUserAndNameOrderByExpirationDateAsc(user: User, name: String): List<Warranty>
+    fun findAllByUserAndNameContainingIgnoreCaseOrderByExpirationDateAsc(user: User, name: String): List<Warranty>
 
     fun findByIdAndUser(id: Long, user: User): Optional<Warranty>
 }

@@ -29,7 +29,10 @@ class WarrantyController(
             .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the user") }
 
         val warranties = if (name.isPresent) {
-            warrantyRepository.findAllByUserAndNameOrderByExpirationDateAsc(user = user, name = name.get())
+            warrantyRepository.findAllByUserAndNameContainingIgnoreCaseOrderByExpirationDateAsc(
+                user = user,
+                name = name.get()
+            )
         } else {
             warrantyRepository.findAllByUserOrderByExpirationDateAsc(user = user)
         }
