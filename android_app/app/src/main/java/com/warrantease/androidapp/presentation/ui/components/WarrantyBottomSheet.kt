@@ -124,7 +124,8 @@ fun WarrantyBottomSheet(warranty: Warranty, changeOpenSheetState: (Boolean) -> U
 				modifier = Modifier
 					.padding(horizontal = 21.dp)
 					.fillMaxWidth()
-					.defaultMinSize(minHeight = 260.dp)
+					.defaultMinSize(minHeight = 260.dp),
+				verticalArrangement = Arrangement.spacedBy(12.dp)
 			) {
 				Text(
 					text = stringResource(id = R.string.warranty_detail_notes),
@@ -133,9 +134,7 @@ fun WarrantyBottomSheet(warranty: Warranty, changeOpenSheetState: (Boolean) -> U
 				)
 				Text(
 					text = warranty.notes,
-					color = AppTheme.neutral500,
-					maxLines = 1,
-					overflow = TextOverflow.Ellipsis
+					color = AppTheme.neutral500
 				)
 			}
 		}
