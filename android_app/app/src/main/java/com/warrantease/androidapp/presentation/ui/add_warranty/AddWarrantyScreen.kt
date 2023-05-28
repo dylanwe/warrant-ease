@@ -2,6 +2,7 @@ package com.warrantease.androidapp.presentation.ui.add_warranty
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,9 +15,11 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -37,6 +40,7 @@ import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.components.BottomNav
 import com.warrantease.androidapp.presentation.ui.components.GradientButton
+import com.warrantease.androidapp.presentation.ui.components.WarrantyDatePicker
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
 import com.warrantease.androidapp.presentation.viewmodel.AddWarrantyViewModel
 import com.warrantease.androidapp.presentation.viewmodel.uiState.UIState
@@ -83,6 +87,8 @@ private fun Content(
 	navController: NavController,
 	viewModel: AddWarrantyViewModel,
 ) {
+	val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
 	var name by remember {
 		mutableStateOf(TextFieldValue(""))
 	}
@@ -90,11 +96,13 @@ private fun Content(
 		mutableStateOf(TextFieldValue(""))
 	}
 	var buyDate by remember {
-		mutableStateOf(TextFieldValue(""))
+		mutableStateOf<LocalDate?>(null)
 	}
+	var isBuyDateDialogOpen by remember { mutableStateOf(false) }
 	var expiration by remember {
-		mutableStateOf(TextFieldValue(""))
+		mutableStateOf<LocalDate?>(null)
 	}
+	var isExpirationDateDialogOpen by remember { mutableStateOf(false) }
 	// var reminder by remember {
 	// 	mutableStateOf(TextFieldValue(""))
 	// }
@@ -104,6 +112,16 @@ private fun Content(
 
 	val context = LocalContext.current
 
+	WarrantyDatePicker(
+		isDialogOpen = isBuyDateDialogOpen,
+		setDate = { buyDate = it },
+		setDialogState = { isBuyDateDialogOpen = it }
+	)
+	WarrantyDatePicker(
+		isDialogOpen = isExpirationDateDialogOpen,
+		setDate = { expiration = it },
+		setDialogState = { isExpirationDateDialogOpen = it }
+	)
 	Scaffold(
 		topBar = {
 			TopAppBar(
@@ -136,7 +154,6 @@ private fun Content(
 			Column(
 				verticalArrangement = Arrangement.spacedBy(16.dp)
 			) {
-
 				OutlinedTextField(
 					label = { Text(text = stringResource(id = R.string.add_warranty_name)) },
 					placeholder = { Text(text = stringResource(id = R.string.add_warranty_name_hint)) },
@@ -165,32 +182,56 @@ private fun Content(
 					OutlinedTextField(
 						label = { Text(text = stringResource(id = R.string.add_warranty_buy_date)) },
 						placeholder = { Text(text = stringResource(id = R.string.add_warranty_date_hint)) },
-						value = buyDate.text,
-						onValueChange = { buyDate = TextFieldValue(it) },
+						value = buyDate?.format(formatter) ?: "",
+						onValueChange = {},
 						shape = RoundedCornerShape(18.dp),
-						modifier = Modifier.weight(0.5f),
+						enabled = false,
+						modifier = Modifier
+							.weight(0.5f)
+							.clickable { isBuyDateDialogOpen = true },
 						trailingIcon = {
 							Icon(
 								painter = painterResource(id = R.drawable.baseline_calendar_month_24),
 								contentDescription = "buy date",
 								tint = AppTheme.neutral500
 							)
-						}
+						},
+						colors = TextFieldDefaults.outlinedTextFieldColors(
+							disabledTextColor = MaterialTheme.colorScheme.onSurface,
+							disabledBorderColor = MaterialTheme.colorScheme.outline,
+							disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+							disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+							// For Icons
+							disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+							disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+						)
 					)
 					OutlinedTextField(
 						label = { Text(text = stringResource(id = R.string.add_warranty_expiration_date)) },
 						placeholder = { Text(text = stringResource(id = R.string.add_warranty_date_hint)) },
-						value = expiration.text,
-						onValueChange = { expiration = TextFieldValue(it) },
+						value = expiration?.format(formatter) ?: "",
+						onValueChange = {},
 						shape = RoundedCornerShape(18.dp),
-						modifier = Modifier.weight(0.5f),
+						enabled = false,
+						modifier = Modifier
+							.weight(0.5f)
+							.clickable { isExpirationDateDialogOpen = true },
 						trailingIcon = {
 							Icon(
 								painter = painterResource(id = R.drawable.baseline_calendar_month_24),
 								contentDescription = "expiration date",
 								tint = AppTheme.neutral500
 							)
-						}
+						},
+						colors = TextFieldDefaults.outlinedTextFieldColors(
+							disabledTextColor = MaterialTheme.colorScheme.onSurface,
+							disabledBorderColor = MaterialTheme.colorScheme.outline,
+							disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+							disabledLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+							// For Icons
+							disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+							disabledTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant
+						)
 					)
 				}
 
@@ -226,21 +267,19 @@ private fun Content(
 					val areInputsValid = areInputsValid(
 						context = context,
 						name = name.text,
-						buy = buyDate.text,
-						expiration = expiration.text,
+						buy = buyDate,
+						expiration = expiration,
 						// reminder = reminder.text,
 						notes = notes.text
 					)
-					if (areInputsValid) {
-						val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
+					if (areInputsValid && buyDate != null && expiration != null) {
 						val warranty = Warranty(
 							id = -1,
 							name = name.text,
 							store = store.text,
 							notes = notes.text,
-							buyDate = LocalDate.parse(buyDate.text, formatter),
-							expirationDate = LocalDate.parse(expiration.text, formatter),
+							buyDate = buyDate!!,
+							expirationDate = expiration!!,
 							reminderDate = LocalDate.now()
 							// reminderDate = LocalDate.parse(reminder.text, formatter)
 						)
@@ -259,13 +298,11 @@ private fun Content(
 private fun areInputsValid(
 	context: Context,
 	name: String,
-	buy: String,
-	expiration: String,
+	buy: LocalDate?,
+	expiration: LocalDate?,
 	// reminder: String,
 	notes: String,
 ): Boolean {
-	val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
 	if (name.isBlank()) {
 		Toast.makeText(
 			context,
@@ -275,14 +312,19 @@ private fun areInputsValid(
 		return false
 	}
 
-	try {
-		LocalDate.parse(buy, formatter)
-		LocalDate.parse(expiration, formatter)
-		// LocalDate.parse(reminder, formatter)
-	} catch (e: Exception) {
+	if (buy == null || expiration == null) {
 		Toast.makeText(
 			context,
-			context.getString(R.string.could_not_parse_dates),
+			context.getString(R.string.add_warranty_date_incorrect),
+			Toast.LENGTH_SHORT
+		).show()
+		return false
+	}
+
+	if (expiration < buy) {
+		Toast.makeText(
+			context,
+			context.getString(R.string.add_warranty_expiration_smaller),
 			Toast.LENGTH_SHORT
 		).show()
 		return false

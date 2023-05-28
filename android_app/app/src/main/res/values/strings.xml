@@ -37,4 +37,6 @@
     <string name="add_warranty_date_hint">13-07-2020</string>
     <string name="add_warranty_expiration_date">Expiration</string>
     <string name="add_warranty_notes">Notes</string>
+    <string name="add_warranty_expiration_smaller">Expiration date can not be smaller than the buy date</string>
+    <string name="add_warranty_date_incorrect">All two dates should be filled in correctly</string>
 </resources>
