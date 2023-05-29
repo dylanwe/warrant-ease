@@ -15,7 +15,6 @@ data class Warranty(
     val notes: String,
     val buyDate: LocalDate,
     val expirationDate: LocalDate,
-    val reminderDate: LocalDate,
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

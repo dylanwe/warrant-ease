@@ -14,6 +14,4 @@ data class WarrantyGetResponse(
 	val buyDate: LocalDate,
 	@Serializable(with = LocalDateSerializer::class)
 	val expirationDate: LocalDate,
-	@Serializable(with = LocalDateSerializer::class)
-	val reminderDate: LocalDate,
 )

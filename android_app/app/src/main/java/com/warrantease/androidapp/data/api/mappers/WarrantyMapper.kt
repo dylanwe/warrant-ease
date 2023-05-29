@@ -16,8 +16,7 @@ object WarrantyMapper {
 			store = store,
 			notes = notes,
 			buyDate = buyDate,
-			expirationDate = expirationDate,
-			reminderDate = reminderDate
+			expirationDate = expirationDate
 		)
 	}
 
@@ -28,7 +27,6 @@ object WarrantyMapper {
 			notes = notes,
 			buyDate = buyDate,
 			expirationDate = expirationDate,
-			reminderDate = reminderDate
 		)
 	}
 }

@@ -2,7 +2,8 @@ package com.warrantychecker.backend.requests
 
 import java.time.LocalDate
 
-data class WarrantyPostRequest(
+data class WarrantyPutRequest(
+    val id: Long,
     val name: String,
     val store: String,
     val notes: String,

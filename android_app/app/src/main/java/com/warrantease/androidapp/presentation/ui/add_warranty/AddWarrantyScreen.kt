@@ -103,9 +103,7 @@ private fun Content(
 		mutableStateOf<LocalDate?>(null)
 	}
 	var isExpirationDateDialogOpen by remember { mutableStateOf(false) }
-	// var reminder by remember {
-	// 	mutableStateOf(TextFieldValue(""))
-	// }
+
 	var notes by remember {
 		mutableStateOf(TextFieldValue(""))
 	}
@@ -235,22 +233,6 @@ private fun Content(
 					)
 				}
 
-				// OutlinedTextField(
-				// 	label = { Text(text = "Reminder") },
-				// 	placeholder = { Text(text = "13-07-2020") },
-				// 	value = reminder.text,
-				// 	onValueChange = { reminder = TextFieldValue(it) },
-				// 	shape = RoundedCornerShape(18.dp),
-				// 	modifier = Modifier.fillMaxWidth(),
-				// 	trailingIcon = {
-				// 		Icon(
-				// 			painter = painterResource(id = R.drawable.outline_notifications_24),
-				// 			contentDescription = "reminder",
-				// 			tint = AppTheme.neutral500
-				// 		)
-				// 	}
-				// )
-
 				OutlinedTextField(
 					label = { Text(text = stringResource(id = R.string.add_warranty_notes)) },
 					placeholder = { Text(text = "...") },
@@ -269,8 +251,6 @@ private fun Content(
 						name = name.text,
 						buy = buyDate,
 						expiration = expiration,
-						// reminder = reminder.text,
-						notes = notes.text
 					)
 					if (areInputsValid && buyDate != null && expiration != null) {
 						val warranty = Warranty(
@@ -279,9 +259,7 @@ private fun Content(
 							store = store.text,
 							notes = notes.text,
 							buyDate = buyDate!!,
-							expirationDate = expiration!!,
-							reminderDate = LocalDate.now()
-							// reminderDate = LocalDate.parse(reminder.text, formatter)
+							expirationDate = expiration!!
 						)
 
 						viewModel.saveWarranty(warranty)
@@ -300,8 +278,6 @@ private fun areInputsValid(
 	name: String,
 	buy: LocalDate?,
 	expiration: LocalDate?,
-	// reminder: String,
-	notes: String,
 ): Boolean {
 	if (name.isBlank()) {
 		Toast.makeText(

@@ -4,6 +4,7 @@ import com.warrantychecker.backend.models.Warranty
 import com.warrantychecker.backend.repositories.UserRepository
 import com.warrantychecker.backend.repositories.WarrantyRepository
 import com.warrantychecker.backend.requests.WarrantyPostRequest
+import com.warrantychecker.backend.requests.WarrantyPutRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -57,7 +58,6 @@ class WarrantyController(
             notes = warrantyPostRequest.notes,
             buyDate = warrantyPostRequest.buyDate,
             expirationDate = warrantyPostRequest.expirationDate,
-            reminderDate = warrantyPostRequest.reminderDate,
             user = user
         )
 
@@ -86,6 +86,40 @@ class WarrantyController(
         return ResponseEntity
             .ok()
             .body(warranty)
+    }
+
+    @PutMapping("{id}")
+    fun updateWarranty(
+        authentication: Authentication,
+        @PathVariable id: Long,
+        @RequestBody body: WarrantyPutRequest
+    ): ResponseEntity<Warranty> {
+        userRepository
+            .findById(authentication.name)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the user") }
+
+        val oldWarranty = warrantyRepository
+            .findById(id)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find odl warranty") }
+
+        val updatedWarranty = oldWarranty.copy(
+            name = body.name,
+            store = body.store,
+            buyDate = body.buyDate,
+            notes = body.notes,
+            expirationDate = body.expirationDate
+        )
+
+        val savedWarranty = warrantyRepository.save(updatedWarranty)
+
+        val location = ServletUriComponentsBuilder
+            .fromCurrentRequest()
+            .path("/{id}")
+            .build(savedWarranty.id)
+
+        return ResponseEntity
+            .created(location)
+            .body(savedWarranty)
     }
 
     @GetMapping("/top")

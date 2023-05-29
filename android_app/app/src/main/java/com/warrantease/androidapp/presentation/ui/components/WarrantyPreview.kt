@@ -107,8 +107,7 @@ private fun Preview() {
 		store = "Apple",
 		notes = "",
 		buyDate = LocalDate.now(),
-		expirationDate = LocalDate.now(),
-		reminderDate = LocalDate.now()
+		expirationDate = LocalDate.now()
 	)
 
 	AndroidAppTheme {
