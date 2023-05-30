@@ -2,6 +2,7 @@ package com.warrantease.androidapp.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,11 +37,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -52,6 +57,8 @@ fun WarrantyBottomSheet(warranty: Warranty, changeOpenSheetState: (Boolean) -> U
 	val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
 	val daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), warranty.expirationDate)
+
+	var expanded by remember { mutableStateOf(false) }
 
 	// Sheet content
 	ModalBottomSheet(
@@ -78,18 +85,45 @@ fun WarrantyBottomSheet(warranty: Warranty, changeOpenSheetState: (Boolean) -> U
 					maxLines = 1,
 					overflow = TextOverflow.Ellipsis
 				)
-				IconButton(
-					// Note: If you provide logic outside of onDismissRequest to remove the sheet,
-					// you must additionally handle intended state cleanup, if any.
-					onClick = {
-						scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-							if (!bottomSheetState.isVisible) {
-								changeOpenSheetState(false)
-							}
-						}
-					}
+				Box(
+					contentAlignment = Alignment.Center
 				) {
-					Icon(imageVector = Icons.Default.Close, "Close")
+					IconButton(onClick = {
+						expanded = true
+					}) {
+						Icon(
+							imageVector = Icons.Default.MoreVert,
+							contentDescription = "Open Options"
+						)
+					}
+					DropdownMenu(
+						expanded = expanded,
+						onDismissRequest = {
+							expanded = false
+						},
+						offset = DpOffset(x = 20.dp, y = 70.dp)
+					) {
+						DropdownMenuItem(
+							text = { Text("Edit") },
+							onClick = { /* Handle edit! */ },
+							leadingIcon = {
+								Icon(
+									Icons.Outlined.Edit,
+									contentDescription = null
+								)
+							}
+						)
+						DropdownMenuItem(
+							text = { Text("Delete") },
+							onClick = { /* Handle settings! */ },
+							leadingIcon = {
+								Icon(
+									Icons.Outlined.Delete,
+									contentDescription = null
+								)
+							}
+						)
+					}
 				}
 			}
 
