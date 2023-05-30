@@ -71,7 +71,7 @@ fun WarrantiesScreen(
 			UIState.NORMAL -> {
 				LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
 					items(items = warranties) { warranty ->
-						WarrantPreview(warranty)
+						WarrantPreview(warranty, navController)
 					}
 				}
 			}

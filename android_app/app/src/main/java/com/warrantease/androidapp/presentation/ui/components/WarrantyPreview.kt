@@ -24,22 +24,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
-import com.warrantease.androidapp.presentation.ui.theme.AndroidAppTheme
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
-import java.time.LocalDate
 
 @Composable
-fun WarrantPreview(warranty: Warranty) {
+fun WarrantPreview(warranty: Warranty, navController: NavController) {
 	var isBottomSheetOpen by rememberSaveable { mutableStateOf(false) }
 
 	if (isBottomSheetOpen) {
 		WarrantyBottomSheet(
 			warranty = warranty,
+			navController = navController,
 			changeOpenSheetState = {
 				isBottomSheetOpen = it
 			})
@@ -95,22 +94,5 @@ fun WarrantPreview(warranty: Warranty) {
 			contentDescription = "Enter",
 			tint = AppTheme.neutral800
 		)
-	}
-}
-
-@Preview
-@Composable
-private fun Preview() {
-	val warranty = Warranty(
-		id = 1,
-		name = "Macbook Pro",
-		store = "Apple",
-		notes = "",
-		buyDate = LocalDate.now(),
-		expirationDate = LocalDate.now()
-	)
-
-	AndroidAppTheme {
-		WarrantPreview(warranty)
 	}
 }

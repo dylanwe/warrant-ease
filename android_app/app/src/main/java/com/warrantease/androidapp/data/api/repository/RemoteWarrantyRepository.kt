@@ -25,7 +25,11 @@ class RemoteWarrantyRepository(
 	}
 
 	override suspend fun deleteWarrantyById(warrantyId: Long) {
-		return warrantyService.deleteWarranty(warrantyId)
+		return warrantyService.deleteWarrantyById(warrantyId)
+	}
+
+	override suspend fun getWarrantyById(warrantyId: Long): Warranty {
+		return warrantyService.getWarrantyById(warrantyId).toDomain()
 	}
 
 	override suspend fun updateWarranty(warranty: Warranty) {

@@ -40,13 +40,17 @@ class WarrantyService(private val httpClientProvider: HttpClientProvider) {
 	}
 
 	suspend fun updateWarranty(warrantyPutRequest: WarrantyPutRequest) {
-		httpClientProvider.client.put("/api/v1/warranty") {
+		httpClientProvider.client.put("/api/v1/warranty/${warrantyPutRequest.id}") {
 			contentType(ContentType.Application.Json)
 			setBody(warrantyPutRequest)
 		}
 	}
 
-	suspend fun deleteWarranty(warrantyId: Long) {
+	suspend fun deleteWarrantyById(warrantyId: Long) {
 		httpClientProvider.client.delete("/api/v1/warranty/$warrantyId")
+	}
+
+	suspend fun getWarrantyById(warrantyId: Long): WarrantyGetResponse {
+		return httpClientProvider.client.get("/api/v1/warranty/$warrantyId").body()
 	}
 }

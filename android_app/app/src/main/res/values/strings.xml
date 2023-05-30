@@ -41,4 +41,8 @@
     <string name="add_warranty_date_incorrect">All two dates should be filled in correctly</string>
     <string name="state_message_no_warranties">No warranties found, start by adding some.</string>
     <string name="state_message_error">Could not connect to the internetl.</string>
+    <string name="warranty_update_error">An error occured whilst updating.</string>
+    <string name="updated_warranty">Updated warranty!</string>
+    <string name="update_button">Update</string>
+    <string name="edit_warranty_title">Edit warranty</string>
 </resources>

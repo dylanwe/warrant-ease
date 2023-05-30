@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,6 +26,7 @@ fun WarrantyDatePicker(
 	isDialogOpen: Boolean,
 	setDialogState: (Boolean) -> Unit,
 	setDate: (LocalDate) -> Unit,
+	initialDate: LocalDate = LocalDate.now(),
 ) {
 
 // Decoupled snackbar host state from scaffold state for demo purposes.
@@ -33,7 +35,9 @@ fun WarrantyDatePicker(
 	SnackbarHost(hostState = snackState, Modifier)
 // TODO demo how to read the selected date from the state.
 	if (isDialogOpen) {
-		val datePickerState = rememberDatePickerState()
+		val initDateEpoch = initialDate.atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+		val datePickerState =
+			rememberDatePickerState(initialSelectedDateMillis = initDateEpoch)
 		val confirmEnabled =
 			derivedStateOf { datePickerState.selectedDateMillis != null }
 		DatePickerDialog(

@@ -38,8 +38,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.ramcosta.composedestinations.navigation.navigate
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
+import com.warrantease.androidapp.presentation.ui.destinations.EditWarrantyScreenDestination
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
 import com.warrantease.androidapp.presentation.viewmodel.HomeViewModel
 import com.warrantease.androidapp.presentation.viewmodel.WarrantyViewModel
@@ -55,6 +58,7 @@ fun WarrantyBottomSheet(
 	changeOpenSheetState: (Boolean) -> Unit,
 	warrantyViewModel: WarrantyViewModel = koinViewModel(),
 	homeViewModel: HomeViewModel = koinViewModel(),
+	navController: NavController,
 ) {
 	val skipPartiallyExpanded by remember { mutableStateOf(false) }
 	val bottomSheetState = rememberModalBottomSheetState(
@@ -123,7 +127,11 @@ fun WarrantyBottomSheet(
 					) {
 						DropdownMenuItem(
 							text = { Text("Edit") },
-							onClick = { /* Handle edit! */ },
+							onClick = {
+								navController.navigate(
+									EditWarrantyScreenDestination(warranty.id)
+								)
+							},
 							leadingIcon = {
 								Icon(
 									Icons.Outlined.Edit,
