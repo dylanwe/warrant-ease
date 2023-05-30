@@ -15,7 +15,7 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class HomeViewModel(
-    private val warrantyRepository: WarrantyRepository,
+	private val warrantyRepository: WarrantyRepository,
 ) : ViewModel() {
 
 	private val _state = MutableStateFlow(UIState.LOADING)

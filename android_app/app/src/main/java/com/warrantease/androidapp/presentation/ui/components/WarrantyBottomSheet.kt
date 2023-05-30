@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,23 +41,29 @@ import androidx.compose.ui.unit.dp
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
+import com.warrantease.androidapp.presentation.viewmodel.HomeViewModel
+import com.warrantease.androidapp.presentation.viewmodel.WarrantyViewModel
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WarrantyBottomSheet(warranty: Warranty, changeOpenSheetState: (Boolean) -> Unit) {
-	var skipPartiallyExpanded by remember { mutableStateOf(false) }
-	val scope = rememberCoroutineScope()
+fun WarrantyBottomSheet(
+	warranty: Warranty,
+	changeOpenSheetState: (Boolean) -> Unit,
+	warrantyViewModel: WarrantyViewModel = koinViewModel(),
+	homeViewModel: HomeViewModel = koinViewModel(),
+) {
+	val skipPartiallyExpanded by remember { mutableStateOf(false) }
 	val bottomSheetState = rememberModalBottomSheetState(
 		skipPartiallyExpanded = skipPartiallyExpanded
 	)
 	val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
 	val daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), warranty.expirationDate)
-
 	var expanded by remember { mutableStateOf(false) }
+	var isDialogOpen by remember { mutableStateOf(false) }
 
 	// Sheet content
 	ModalBottomSheet(
@@ -67,6 +72,19 @@ fun WarrantyBottomSheet(warranty: Warranty, changeOpenSheetState: (Boolean) -> U
 		modifier = Modifier.padding(horizontal = 6.dp),
 		containerColor = AppTheme.neutral50
 	) {
+		if (isDialogOpen) {
+			DeleteDialog(
+				setIsDialogOpen = { isDialogOpen = it },
+				onConfirm = {
+					warrantyViewModel.deleteWarranty(warranty.id, onComplete = {
+						warrantyViewModel.getWarranties()
+						homeViewModel.getTopWarranties()
+					})
+					changeOpenSheetState(false)
+				}
+			)
+		}
+
 		Column(
 			modifier = Modifier
 				.fillMaxWidth()
@@ -115,7 +133,7 @@ fun WarrantyBottomSheet(warranty: Warranty, changeOpenSheetState: (Boolean) -> U
 						)
 						DropdownMenuItem(
 							text = { Text("Delete") },
-							onClick = { /* Handle settings! */ },
+							onClick = { isDialogOpen = true },
 							leadingIcon = {
 								Icon(
 									Icons.Outlined.Delete,

@@ -24,7 +24,7 @@ class WarrantyViewModel(
 	private val _warranties = MutableStateFlow<List<Warranty>>(emptyList())
 	val warranties: StateFlow<List<Warranty>> = _warranties.asStateFlow()
 
-	fun getWarranties(name: String) {
+	fun getWarranties(name: String = "") {
 		_state.value = UIState.LOADING
 
 		viewModelScope.launch(Dispatchers.IO) {
@@ -44,6 +44,18 @@ class WarrantyViewModel(
 				Log.e("ERR", exception.stackTraceToString())
 				_state.value = UIState.ERROR
 			}
+		}
+	}
+
+	fun deleteWarranty(warrantyId: Long, onComplete: () -> Unit) {
+		viewModelScope.launch(Dispatchers.IO) {
+			try {
+				warrantyRepository.deleteWarrantyById(warrantyId)
+			} catch (exception: Exception) {
+				Log.e("ERR", exception.stackTraceToString())
+			}
+		}.invokeOnCompletion {
+			onComplete()
 		}
 	}
 }

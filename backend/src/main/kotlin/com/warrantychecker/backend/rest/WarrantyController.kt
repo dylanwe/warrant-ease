@@ -73,6 +73,24 @@ class WarrantyController(
             .build()
     }
 
+    @DeleteMapping("{id}")
+    fun deleteWarrantyById(authentication: Authentication, @PathVariable id: Long): ResponseEntity<Warranty> {
+        val user = userRepository
+            .findById(authentication.name)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the user") }
+
+        val warranty = warrantyRepository
+            .findByIdAndUser(id = id, user = user)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find the warranty with id: $id") }
+
+        warrantyRepository.delete(warranty)
+
+        return ResponseEntity
+            .ok()
+            .body(warranty)
+    }
+
+
     @GetMapping("{id}")
     fun getWarrantyById(authentication: Authentication, @PathVariable id: Long): ResponseEntity<Warranty> {
         val user = userRepository

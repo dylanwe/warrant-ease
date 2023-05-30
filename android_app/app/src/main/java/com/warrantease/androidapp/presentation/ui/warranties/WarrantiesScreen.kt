@@ -58,7 +58,7 @@ fun WarrantiesScreen(
 	navController: NavController,
 	viewModel: WarrantyViewModel = koinViewModel(),
 ) {
-	viewModel.getWarranties(name = "")
+	viewModel.getWarranties()
 	val warranties by viewModel.warranties.collectAsState()
 	val uiState by viewModel.state.collectAsState()
 

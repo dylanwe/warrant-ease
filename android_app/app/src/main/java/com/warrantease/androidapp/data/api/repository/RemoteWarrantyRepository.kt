@@ -2,7 +2,8 @@ package com.warrantease.androidapp.data.api.repository
 
 import com.warrantease.androidapp.data.api.WarrantyService
 import com.warrantease.androidapp.data.api.mappers.WarrantyMapper.toDomain
-import com.warrantease.androidapp.data.api.mappers.WarrantyMapper.toRequest
+import com.warrantease.androidapp.data.api.mappers.WarrantyMapper.toPostRequest
+import com.warrantease.androidapp.data.api.mappers.WarrantyMapper.toPutRequest
 import com.warrantease.androidapp.domain.WarrantyRepository
 import com.warrantease.androidapp.domain.model.Warranty
 import org.koin.core.annotation.Factory
@@ -23,7 +24,15 @@ class RemoteWarrantyRepository(
 		return warrantyService.getTop4Warranties().toDomain()
 	}
 
+	override suspend fun deleteWarrantyById(warrantyId: Long) {
+		return warrantyService.deleteWarranty(warrantyId)
+	}
+
+	override suspend fun updateWarranty(warranty: Warranty) {
+		return warrantyService.updateWarranty(warranty.toPutRequest())
+	}
+
 	override suspend fun saveWarranty(warranty: Warranty) {
-		return warrantyService.saveWarranty(warranty.toRequest())
+		return warrantyService.saveWarranty(warranty.toPostRequest())
 	}
 }
