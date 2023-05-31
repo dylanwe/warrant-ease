@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.InjectedParam
 
@@ -37,9 +38,12 @@ class EditWarrantyViewModel(
 		_updateWarrantyState.value = UIState.LOADING
 
 		viewModelScope.launch(Dispatchers.IO) {
+
 			try {
-				warrantyRepository.updateWarranty(updatedWarranty)
-				_updateWarrantyState.value = UIState.NORMAL
+				withTimeout(5_000) {
+					warrantyRepository.updateWarranty(updatedWarranty)
+					_updateWarrantyState.value = UIState.NORMAL
+				}
 			} catch (exception: Exception) {
 				Log.e("ERR", exception.stackTraceToString())
 				_updateWarrantyState.value = UIState.ERROR
@@ -52,8 +56,10 @@ class EditWarrantyViewModel(
 
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				_warranty.value = warrantyRepository.getWarrantyById(args.warrantyId)
-				_uiState.value = UIState.NORMAL
+				withTimeout(5_000) {
+					_warranty.value = warrantyRepository.getWarrantyById(args.warrantyId)
+					_uiState.value = UIState.NORMAL
+				}
 			} catch (exception: Exception) {
 				Log.e("ERR", exception.stackTraceToString())
 				_uiState.value = UIState.ERROR

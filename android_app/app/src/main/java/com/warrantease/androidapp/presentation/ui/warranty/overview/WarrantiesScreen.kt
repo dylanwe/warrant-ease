@@ -1,4 +1,4 @@
-package com.warrantease.androidapp.presentation.ui.warranties
+package com.warrantease.androidapp.presentation.ui.warranty.overview
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -147,7 +147,7 @@ private fun Content(
 	Scaffold(
 		topBar = {
 			CenterAlignedTopAppBar(
-				title = { Text(text = "Warranties") },
+				title = { Text(text = stringResource(R.string.warranties_title)) },
 				colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
 					containerColor = AppTheme.white
 				)

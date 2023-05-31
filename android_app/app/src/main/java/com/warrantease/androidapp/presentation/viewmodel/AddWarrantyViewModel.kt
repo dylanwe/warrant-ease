@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
@@ -26,8 +27,10 @@ class AddWarrantyViewModel(
 
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				warrantyRepository.saveWarranty(warranty)
-				_saveWarrantyState.value = UIState.NORMAL
+				withTimeout(5_000) {
+					warrantyRepository.saveWarranty(warranty)
+					_saveWarrantyState.value = UIState.NORMAL
+				}
 			} catch (exception: Exception) {
 				Log.e("ERR", exception.stackTraceToString())
 				_saveWarrantyState.value = UIState.ERROR

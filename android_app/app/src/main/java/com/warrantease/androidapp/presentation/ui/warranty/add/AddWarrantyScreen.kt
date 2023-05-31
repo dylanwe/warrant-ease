@@ -1,4 +1,4 @@
-package com.warrantease.androidapp.presentation.ui.add_warranty
+package com.warrantease.androidapp.presentation.ui.warranty.add
 
 import android.content.Context
 import android.widget.Toast

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
@@ -29,11 +30,13 @@ class HomeViewModel(
 
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				_topWarranties.value = warrantyRepository.getAllWarranties()
-				if (topWarranties.value.isEmpty()) {
-					_state.value = UIState.EMPTY
-				} else {
-					_state.value = UIState.NORMAL
+				withTimeout(5_000) {
+					_topWarranties.value = warrantyRepository.getAllWarranties()
+					if (topWarranties.value.isEmpty()) {
+						_state.value = UIState.EMPTY
+					} else {
+						_state.value = UIState.NORMAL
+					}
 				}
 			} catch (exception: Exception) {
 				Log.e("ERR", exception.stackTraceToString())

@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,7 +48,7 @@ fun SignInScreen(navigator: DestinationsNavigator) {
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Text(
-                    text = "Sign in",
+                    text = stringResource(R.string.sign_in),
                     style = MaterialTheme.typography.headlineLarge,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
@@ -58,7 +59,7 @@ fun SignInScreen(navigator: DestinationsNavigator) {
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    EmailForm(submitLabel = "Sign in", onSubmit = emailAuth::signIn)
+                    EmailForm(submitLabel = stringResource(id = R.string.sign_in), onSubmit = emailAuth::signIn)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -70,7 +71,7 @@ fun SignInScreen(navigator: DestinationsNavigator) {
                         color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.weight(1f)
                     )
-                    Text(text = "Or")
+                    Text(text = stringResource(R.string.or))
                     Divider(
                         color = MaterialTheme.colorScheme.outline,
                         modifier = Modifier.weight(1f)
@@ -79,8 +80,8 @@ fun SignInScreen(navigator: DestinationsNavigator) {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 GoogleSignInButton(
-                    text = "Sign in with Google",
-                    loadingText = "Signing in...",
+                    text = stringResource(R.string.sign_in_with_google),
+                    loadingText = stringResource(R.string.signing_in),
                     isLoading = isGoogleLoading,
                     icon = painterResource(id = R.drawable.ic_google_logo),
                     shape = RoundedCornerShape(18.dp),
@@ -92,9 +93,9 @@ fun SignInScreen(navigator: DestinationsNavigator) {
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(text = "Don’t have an account?")
+                Text(text = stringResource(R.string.don_t_have_an_account))
                 Text(
-                    text = "Sign up",
+                    text = stringResource(R.string.sign_up),
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
                         navigator.navigate(SignUpScreenDestination)

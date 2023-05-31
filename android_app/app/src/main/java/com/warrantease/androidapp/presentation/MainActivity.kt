@@ -20,9 +20,9 @@ import com.warrantease.androidapp.presentation.ui.NavGraphs
 import com.warrantease.androidapp.presentation.ui.destinations.HomeScreenDestination
 import com.warrantease.androidapp.presentation.ui.destinations.OnboardingScreenDestination
 import com.warrantease.androidapp.presentation.ui.destinations.SignInScreenDestination
-import com.warrantease.androidapp.presentation.ui.onboarding.OnboardingScreen
 import com.warrantease.androidapp.presentation.ui.theme.AndroidAppTheme
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.*
@@ -34,68 +34,73 @@ import org.koin.ksp.generated.*
  * @author Dylan Weijgertze
  */
 class MainActivity : ComponentActivity(), AuthStateListener, KoinComponent {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var googleAuth: GoogleAuth
+	private lateinit var auth: FirebaseAuth
+	private lateinit var googleAuth: GoogleAuth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
 
-        startKoin {
-            androidContext(this@MainActivity)
-            modules(
-                AppModule().module
-            )
-        }
+		try {
+			startKoin {
+				androidLogger()
+				androidContext(this@MainActivity)
+				modules(
+					AppModule().module
+				)
+			}
+		} catch (e: Exception) {
+			Log.e("koin", "could not start koin")
+		}
 
-        auth = Firebase.auth
-        // Init auth providers
-        googleAuth = GoogleAuth(auth, this)
-    }
+		auth = Firebase.auth
+		// Init auth providers
+		googleAuth = GoogleAuth(auth, this)
+	}
 
-    override fun onStart() {
-        super.onStart()
-        auth.addAuthStateListener(this)
-    }
+	override fun onStart() {
+		super.onStart()
+		auth.addAuthStateListener(this)
+	}
 
-    override fun onStop() {
-        super.onStop()
-        auth.removeAuthStateListener(this)
-    }
+	override fun onStop() {
+		super.onStop()
+		auth.removeAuthStateListener(this)
+	}
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == GoogleAuth.RC_SIGN_IN) {
-            googleAuth.onActivityResult(data)
-        }
-    }
+	@Deprecated("Deprecated in Java")
+	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+		super.onActivityResult(requestCode, resultCode, data)
+		// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+		if (requestCode == GoogleAuth.RC_SIGN_IN) {
+			googleAuth.onActivityResult(data)
+		}
+	}
 
-    /**
-     * Update the UI based on Firebase auth state
-     */
-    override fun onAuthStateChanged(firebaseAuth: FirebaseAuth) {
-        setContent {
-            AndroidAppTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    // Pick start navigation
-                    val start = if (firebaseAuth.currentUser != null) {
-                        if (firebaseAuth.currentUser!!.displayName.isNullOrBlank()) {
-                            OnboardingScreenDestination
-                        } else {
-                            HomeScreenDestination
-                        }
-                    } else {
-                        SignInScreenDestination
-                    }
+	/**
+	 * Update the UI based on Firebase auth state
+	 */
+	override fun onAuthStateChanged(firebaseAuth: FirebaseAuth) {
+		setContent {
+			AndroidAppTheme {
+				// A surface container using the 'background' color from the theme
+				Surface(
+					modifier = Modifier.fillMaxSize(),
+					color = MaterialTheme.colorScheme.background
+				) {
+					// Pick start navigation
+					val start = if (firebaseAuth.currentUser != null) {
+						if (firebaseAuth.currentUser!!.displayName.isNullOrBlank()) {
+							OnboardingScreenDestination
+						} else {
+							HomeScreenDestination
+						}
+					} else {
+						SignInScreenDestination
+					}
 
-                    DestinationsNavHost(navGraph = NavGraphs.root, startRoute = start)
-                }
-            }
-        }
-    }
+					DestinationsNavHost(navGraph = NavGraphs.root, startRoute = start)
+				}
+			}
+		}
+	}
 }

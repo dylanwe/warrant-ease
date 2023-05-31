@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
@@ -29,16 +30,18 @@ class WarrantyViewModel(
 
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				if (name.isBlank()) {
-					_warranties.value = warrantyRepository.getAllWarranties()
-				} else {
-					_warranties.value = warrantyRepository.getAllWarranties(name = name)
-				}
+				withTimeout(5_000) {
+					if (name.isBlank()) {
+						_warranties.value = warrantyRepository.getAllWarranties()
+					} else {
+						_warranties.value = warrantyRepository.getAllWarranties(name = name)
+					}
 
-				if (warranties.value.isEmpty()) {
-					_state.value = UIState.EMPTY
-				} else {
-					_state.value = UIState.NORMAL
+					if (warranties.value.isEmpty()) {
+						_state.value = UIState.EMPTY
+					} else {
+						_state.value = UIState.NORMAL
+					}
 				}
 			} catch (exception: Exception) {
 				Log.e("ERR", exception.stackTraceToString())
@@ -50,7 +53,9 @@ class WarrantyViewModel(
 	fun deleteWarranty(warrantyId: Long, onComplete: () -> Unit) {
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
-				warrantyRepository.deleteWarrantyById(warrantyId)
+				withTimeout(5_000) {
+					warrantyRepository.deleteWarrantyById(warrantyId)
+				}
 			} catch (exception: Exception) {
 				Log.e("ERR", exception.stackTraceToString())
 			}
