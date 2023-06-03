@@ -31,7 +31,7 @@ class HomeViewModel(
 		viewModelScope.launch(Dispatchers.IO) {
 			try {
 				withTimeout(5_000) {
-					_topWarranties.value = warrantyRepository.getAllWarranties()
+					_topWarranties.value = warrantyRepository.getTop4Warranties()
 					if (topWarranties.value.isEmpty()) {
 						_state.value = UIState.EMPTY
 					} else {
