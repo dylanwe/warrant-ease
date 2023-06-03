@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Search
@@ -56,8 +56,8 @@ fun HomeScreen(
 	Content(navController = navController, user = user) {
 		when (uiState) {
 			UIState.NORMAL -> {
-				LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-					items(items = warranties) { warranty ->
+				Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+					warranties.forEach { warranty ->
 						WarrantPreview(warranty, navController)
 					}
 				}
@@ -120,6 +120,7 @@ private fun Content(
 	content: @Composable (() -> Unit),
 ) {
 	val context = LocalContext.current
+	val scrollState = rememberScrollState()
 
 	Scaffold(
 		topBar = {
@@ -141,12 +142,14 @@ private fun Content(
 		}
 	) { innerPadding ->
 		Column(
-			modifier = Modifier.padding(
-				top = innerPadding.calculateTopPadding(),
-				bottom = innerPadding.calculateBottomPadding(),
-				start = 18.dp,
-				end = 18.dp
-			)
+			modifier = Modifier
+				.padding(
+					top = innerPadding.calculateTopPadding(),
+					bottom = innerPadding.calculateBottomPadding(),
+					start = 18.dp,
+					end = 18.dp
+				)
+				.verticalScroll(scrollState)
 		) {
 			Row(
 				verticalAlignment = Alignment.CenterVertically,
@@ -227,6 +230,8 @@ private fun Content(
 			Spacer(modifier = Modifier.height(12.dp))
 
 			content()
+
+			Spacer(modifier = Modifier.height(32.dp))
 		}
 	}
 }

@@ -30,6 +30,8 @@ import androidx.navigation.NavController
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
+import com.warrantease.androidapp.presentation.ui.utils.WarrantyDateFormatter.dateFormatter
+import java.time.LocalDate
 
 @Composable
 fun WarrantPreview(warranty: Warranty, navController: NavController) {
@@ -44,6 +46,8 @@ fun WarrantPreview(warranty: Warranty, navController: NavController) {
 			})
 	}
 
+	val isWarrantyExpired = LocalDate.now() >= warranty.expirationDate
+
 	Row(
 		modifier = Modifier
 			.fillMaxWidth()
@@ -55,7 +59,11 @@ fun WarrantPreview(warranty: Warranty, navController: NavController) {
 		horizontalArrangement = Arrangement.SpaceBetween,
 	) {
 		Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-			Text(text = warranty.name, fontWeight = FontWeight.Bold, color = AppTheme.neutral800)
+			Text(
+				text = warranty.name,
+				fontWeight = FontWeight.Bold,
+				color = AppTheme.neutral800
+			)
 			Row(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
 				Row(
 					horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -64,12 +72,12 @@ fun WarrantPreview(warranty: Warranty, navController: NavController) {
 					Icon(
 						painter = painterResource(id = R.drawable.baseline_access_time_24),
 						contentDescription = "expiration",
-						tint = AppTheme.neutral400,
+						tint = if (isWarrantyExpired) AppTheme.red400 else AppTheme.neutral400,
 						modifier = Modifier.size(18.dp)
 					)
 					Text(
-						text = warranty.expirationDate.toString(),
-						color = AppTheme.neutral400,
+						text = dateFormatter.format(warranty.expirationDate),
+						color = if (isWarrantyExpired) AppTheme.red400 else AppTheme.neutral400,
 						fontSize = 14.sp
 					)
 				}
@@ -80,7 +88,7 @@ fun WarrantPreview(warranty: Warranty, navController: NavController) {
 					) {
 						Icon(
 							painter = painterResource(id = R.drawable.baseline_storefront_24),
-							contentDescription = "expiration",
+							contentDescription = "store",
 							tint = AppTheme.neutral400,
 							modifier = Modifier.size(18.dp)
 						)

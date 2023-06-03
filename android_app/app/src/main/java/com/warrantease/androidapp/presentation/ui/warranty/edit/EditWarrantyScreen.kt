@@ -43,13 +43,13 @@ import com.warrantease.androidapp.presentation.ui.components.BottomNav
 import com.warrantease.androidapp.presentation.ui.components.GradientButton
 import com.warrantease.androidapp.presentation.ui.components.WarrantyDatePicker
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
+import com.warrantease.androidapp.presentation.ui.utils.WarrantyDateFormatter.dateFormatter
 import com.warrantease.androidapp.presentation.viewmodel.editWarranty.EditWarrantyViewModel
 import com.warrantease.androidapp.presentation.viewmodel.editWarranty.model.EditWarrantyViewModelArgs
 import com.warrantease.androidapp.presentation.viewmodel.uiState.UIState
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Destination
 @Composable
@@ -126,8 +126,6 @@ private fun Content(
 	navController: NavController,
 	viewModel: EditWarrantyViewModel,
 ) {
-	val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
 	var name by remember {
 		mutableStateOf(TextFieldValue(warranty.name))
 	}
@@ -221,7 +219,7 @@ private fun Content(
 					OutlinedTextField(
 						label = { Text(text = stringResource(id = R.string.add_warranty_buy_date)) },
 						placeholder = { Text(text = stringResource(id = R.string.add_warranty_date_hint)) },
-						value = buyDate?.format(formatter) ?: "",
+						value = buyDate?.format(dateFormatter) ?: "",
 						onValueChange = {},
 						shape = RoundedCornerShape(18.dp),
 						enabled = false,
@@ -248,7 +246,7 @@ private fun Content(
 					OutlinedTextField(
 						label = { Text(text = stringResource(id = R.string.add_warranty_expiration_date)) },
 						placeholder = { Text(text = stringResource(id = R.string.add_warranty_date_hint)) },
-						value = expiration?.format(formatter) ?: "",
+						value = expiration?.format(dateFormatter) ?: "",
 						onValueChange = {},
 						shape = RoundedCornerShape(18.dp),
 						enabled = false,

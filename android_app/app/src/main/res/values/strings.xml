@@ -55,4 +55,6 @@
     <string name="or">Or</string>
     <string name="sign_in">Sign in</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="confirm_date">OK</string>
+    <string name="cancel_date">Cancel</string>
 </resources>

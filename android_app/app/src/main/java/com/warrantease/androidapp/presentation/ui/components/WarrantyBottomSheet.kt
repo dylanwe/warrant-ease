@@ -44,11 +44,11 @@ import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.destinations.EditWarrantyScreenDestination
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
+import com.warrantease.androidapp.presentation.ui.utils.WarrantyDateFormatter.dateFormatter
 import com.warrantease.androidapp.presentation.viewmodel.HomeViewModel
 import com.warrantease.androidapp.presentation.viewmodel.WarrantyViewModel
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,7 +64,6 @@ fun WarrantyBottomSheet(
 	val bottomSheetState = rememberModalBottomSheetState(
 		skipPartiallyExpanded = skipPartiallyExpanded
 	)
-	val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 	val daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), warranty.expirationDate)
 	var expanded by remember { mutableStateOf(false) }
 	var isDialogOpen by remember { mutableStateOf(false) }

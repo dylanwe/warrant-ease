@@ -15,6 +15,7 @@
             android:name="com.warrantease.androidapp.presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
