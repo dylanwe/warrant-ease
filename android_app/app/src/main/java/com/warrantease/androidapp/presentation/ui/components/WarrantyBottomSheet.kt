@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.ramcosta.composedestinations.navigation.navigate
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
@@ -48,8 +49,8 @@ import com.warrantease.androidapp.presentation.ui.utils.WarrantyDateFormatter.da
 import com.warrantease.androidapp.presentation.viewmodel.HomeViewModel
 import com.warrantease.androidapp.presentation.viewmodel.WarrantyViewModel
 import org.koin.androidx.compose.koinViewModel
-import java.time.LocalDate
-import java.time.temporal.ChronoUnit
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +65,6 @@ fun WarrantyBottomSheet(
 	val bottomSheetState = rememberModalBottomSheetState(
 		skipPartiallyExpanded = skipPartiallyExpanded
 	)
-	val daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), warranty.expirationDate)
 	var expanded by remember { mutableStateOf(false) }
 	var isDialogOpen by remember { mutableStateOf(false) }
 
@@ -72,7 +72,8 @@ fun WarrantyBottomSheet(
 	ModalBottomSheet(
 		onDismissRequest = { changeOpenSheetState(false) },
 		sheetState = bottomSheetState,
-		modifier = Modifier.padding(horizontal = 6.dp),
+		modifier = Modifier
+			.padding(horizontal = 6.dp),
 		containerColor = AppTheme.neutral50
 	) {
 		if (isDialogOpen) {
@@ -166,8 +167,13 @@ fun WarrantyBottomSheet(
 				icon = painterResource(id = R.drawable.baseline_edit_calendar_24),
 			)
 			RowSection(
-				name = stringResource(id = R.string.warranty_detail_days_left),
-				value = daysLeft.toString(),
+				name = stringResource(id = R.string.warranty_detail_expire_time),
+				value = TimeAgo.using(
+					ZonedDateTime.of(
+						warranty.expirationDate.atStartOfDay(),
+						ZoneId.systemDefault()
+					).toInstant().toEpochMilli(),
+				),
 				icon = painterResource(id = R.drawable.baseline_timelapse_24),
 				backgroundColor = AppTheme.neutral100
 			)

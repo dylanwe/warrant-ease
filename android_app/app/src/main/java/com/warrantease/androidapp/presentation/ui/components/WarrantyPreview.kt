@@ -24,83 +24,100 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
-import com.warrantease.androidapp.presentation.ui.utils.WarrantyDateFormatter.dateFormatter
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @Composable
 fun WarrantPreview(warranty: Warranty, navController: NavController) {
 	var isBottomSheetOpen by rememberSaveable { mutableStateOf(false) }
 
-	if (isBottomSheetOpen) {
-		WarrantyBottomSheet(
-			warranty = warranty,
-			navController = navController,
-			changeOpenSheetState = {
-				isBottomSheetOpen = it
-			})
-	}
+	Column {
 
-	val isWarrantyExpired = LocalDate.now() >= warranty.expirationDate
+		if (isBottomSheetOpen) {
+			WarrantyBottomSheet(
+				warranty = warranty,
+				navController = navController,
+				changeOpenSheetState = {
+					isBottomSheetOpen = it
+				})
+		}
 
-	Row(
-		modifier = Modifier
-			.fillMaxWidth()
-			.clip(RoundedCornerShape(10.dp))
-			.border(width = 1.dp, AppTheme.neutral300, shape = RoundedCornerShape(10.dp))
-			.clickable { isBottomSheetOpen = true }
-			.background(AppTheme.white)
-			.padding(horizontal = 18.dp, vertical = 24.dp),
-		horizontalArrangement = Arrangement.SpaceBetween,
-	) {
-		Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-			Text(
-				text = warranty.name,
-				fontWeight = FontWeight.Bold,
-				color = AppTheme.neutral800
-			)
-			Row(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
-				Row(
-					horizontalArrangement = Arrangement.spacedBy(6.dp),
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Icon(
-						painter = painterResource(id = R.drawable.baseline_access_time_24),
-						contentDescription = "expiration",
-						tint = if (isWarrantyExpired) AppTheme.red400 else AppTheme.neutral400,
-						modifier = Modifier.size(18.dp)
-					)
-					Text(
-						text = dateFormatter.format(warranty.expirationDate),
-						color = if (isWarrantyExpired) AppTheme.red400 else AppTheme.neutral400,
-						fontSize = 14.sp
-					)
-				}
-				if (warranty.store.isNotBlank()) {
+		val isWarrantyExpired = LocalDate.now() >= warranty.expirationDate
+
+		Row(
+			modifier = Modifier
+				.fillMaxWidth()
+				.clip(RoundedCornerShape(10.dp))
+				.border(width = 1.dp, AppTheme.neutral300, shape = RoundedCornerShape(10.dp))
+				.clickable { isBottomSheetOpen = true }
+				.background(AppTheme.white)
+				.padding(horizontal = 18.dp, vertical = 24.dp),
+			horizontalArrangement = Arrangement.SpaceBetween,
+		) {
+			Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+				Text(
+					text = warranty.name,
+					fontWeight = FontWeight.Bold,
+					color = AppTheme.neutral800
+				)
+				Row(horizontalArrangement = Arrangement.spacedBy(22.dp)) {
 					Row(
 						horizontalArrangement = Arrangement.spacedBy(6.dp),
 						verticalAlignment = Alignment.CenterVertically
 					) {
 						Icon(
-							painter = painterResource(id = R.drawable.baseline_storefront_24),
-							contentDescription = "store",
-							tint = AppTheme.neutral400,
+							painter = painterResource(id = R.drawable.baseline_access_time_24),
+							contentDescription = "expiration",
+							tint = if (isWarrantyExpired) AppTheme.red400 else AppTheme.neutral400,
 							modifier = Modifier.size(18.dp)
 						)
-						Text(text = warranty.store, color = AppTheme.neutral400, fontSize = 14.sp)
+						Text(
+							text = TimeAgo.using(
+								ZonedDateTime.of(
+									warranty.expirationDate.atStartOfDay(),
+									ZoneId.systemDefault()
+								).toInstant().toEpochMilli(),
+							),
+							color = if (isWarrantyExpired) AppTheme.red400 else AppTheme.neutral400,
+							fontSize = 14.sp
+						)
+					}
+					if (warranty.store.isNotBlank()) {
+						Row(
+							horizontalArrangement = Arrangement.spacedBy(6.dp),
+							verticalAlignment = Alignment.CenterVertically
+						) {
+							Icon(
+								painter = painterResource(id = R.drawable.baseline_storefront_24),
+								contentDescription = "store",
+								tint = AppTheme.neutral400,
+								modifier = Modifier.size(18.dp)
+							)
+							Text(
+								text = warranty.store,
+								color = AppTheme.neutral400,
+								fontSize = 14.sp,
+								maxLines = 1,
+								overflow = TextOverflow.Ellipsis
+							)
+						}
 					}
 				}
 			}
+			Icon(
+				imageVector = Icons.Default.ArrowForward,
+				contentDescription = "Enter",
+				tint = AppTheme.neutral800
+			)
 		}
-		Icon(
-			imageVector = Icons.Default.ArrowForward,
-			contentDescription = "Enter",
-			tint = AppTheme.neutral800
-		)
 	}
 }

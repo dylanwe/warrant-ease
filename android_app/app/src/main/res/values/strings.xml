@@ -8,7 +8,7 @@
     <string name="username_title">Almost done</string>
     <string name="username_subtitle">Pick a Username</string>
     <string name="username_error">Could not save username</string>
-    <string name="username_short_error">Username must be atleast 2 charachters</string>
+    <string name="username_short_error">Username must be at least 2 characters</string>
     <string name="nav_home_label">Home</string>
     <string name="nav_warranties_label">Warranties</string>
     <string name="nav_settings_label">Settings</string>
@@ -23,11 +23,11 @@
     <string name="name_should_not_be_empty">Name should not be empty</string>
     <string name="warranty_detail_buy_date">Buy date</string>
     <string name="warranty_detail_store">Store</string>
-    <string name="warranty_detail_days_left">Days left</string>
+    <string name="warranty_detail_expire_time">Expires</string>
     <string name="warranty_detail_expiration_date">Expiration date</string>
     <string name="warranty_detail_notes">Notes</string>
     <string name="saved_warranty">Saved warranty!</string>
-    <string name="warranty_save_error">An error occured</string>
+    <string name="warranty_save_error">An error occurred</string>
     <string name="add_warranty_title">Add warranty</string>
     <string name="add_warranty_name">Product name</string>
     <string name="add_warranty_name_hint">Enter a product name</string>
@@ -40,8 +40,8 @@
     <string name="add_warranty_expiration_smaller">Expiration date can not be smaller than the buy date</string>
     <string name="add_warranty_date_incorrect">All two dates should be filled in correctly</string>
     <string name="state_message_no_warranties">No warranties found, start by adding some.</string>
-    <string name="state_message_error">Could not connect to the internetl.</string>
-    <string name="warranty_update_error">An error occured whilst updating.</string>
+    <string name="state_message_error">Could not connect to the internet.</string>
+    <string name="warranty_update_error">An error occurred whilst updating.</string>
     <string name="updated_warranty">Updated warranty!</string>
     <string name="update_button">Update</string>
     <string name="edit_warranty_title">Edit warranty</string>
@@ -50,7 +50,7 @@
     <string name="sign_out_text">Sign out</string>
     <string name="sign_up">Sign up</string>
     <string name="don_t_have_an_account">Don’t have an account?</string>
-    <string name="signing_in">Signing in...</string>
+    <string name="signing_in">Signing in…</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="or">Or</string>
     <string name="sign_in">Sign in</string>

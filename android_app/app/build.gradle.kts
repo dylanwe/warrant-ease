@@ -93,6 +93,9 @@ dependencies {
 	val koin_compose_version = "3.4.2"
 	val directions_version = "1.7.33-beta"
 	val ktor_version = "2.0.0"
+	val latestVersion = "4.0.3"
+
+	implementation("com.github.marlonlom:timeago:$latestVersion")
 
 	implementation("com.google.firebase:firebase-bom:31.3.0")
 	implementation("com.google.firebase:firebase-auth-ktx:21.0.3")
