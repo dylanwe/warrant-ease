@@ -28,13 +28,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
+import com.warrantease.androidapp.presentation.ui.utils.RelativeTime
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @Composable
 fun WarrantPreview(warranty: Warranty, navController: NavController) {
@@ -81,12 +79,7 @@ fun WarrantPreview(warranty: Warranty, navController: NavController) {
 							modifier = Modifier.size(18.dp)
 						)
 						Text(
-							text = TimeAgo.using(
-								ZonedDateTime.of(
-									warranty.expirationDate.atStartOfDay(),
-									ZoneId.systemDefault()
-								).toInstant().toEpochMilli(),
-							),
+							text = RelativeTime.getRelativeTime(warranty.expirationDate),
 							color = if (isWarrantyExpired) AppTheme.red400 else AppTheme.neutral400,
 							fontSize = 14.sp
 						)

@@ -39,18 +39,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.github.marlonlom.utilities.timeago.TimeAgo
 import com.ramcosta.composedestinations.navigation.navigate
 import com.warrantease.androidapp.R
 import com.warrantease.androidapp.domain.model.Warranty
 import com.warrantease.androidapp.presentation.ui.destinations.EditWarrantyScreenDestination
 import com.warrantease.androidapp.presentation.ui.theme.AppTheme
+import com.warrantease.androidapp.presentation.ui.utils.RelativeTime
 import com.warrantease.androidapp.presentation.ui.utils.WarrantyDateFormatter.dateFormatter
 import com.warrantease.androidapp.presentation.viewmodel.HomeViewModel
 import com.warrantease.androidapp.presentation.viewmodel.WarrantyViewModel
 import org.koin.androidx.compose.koinViewModel
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -168,12 +166,7 @@ fun WarrantyBottomSheet(
 			)
 			RowSection(
 				name = stringResource(id = R.string.warranty_detail_expire_time),
-				value = TimeAgo.using(
-					ZonedDateTime.of(
-						warranty.expirationDate.atStartOfDay(),
-						ZoneId.systemDefault()
-					).toInstant().toEpochMilli(),
-				),
+				value = RelativeTime.getRelativeTime(warranty.expirationDate),
 				icon = painterResource(id = R.drawable.baseline_timelapse_24),
 				backgroundColor = AppTheme.neutral100
 			)
